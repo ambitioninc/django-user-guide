@@ -3,7 +3,7 @@ from tastypie import fields
 from tastypie.authentication import SessionAuthentication
 from tastypie.authorization import Authorization
 from tastypie.resources import NamespacedModelResource, ALL, ALL_WITH_RELATIONS
-from user_guide.modles import Guide, GuideInfo
+from user_guide.models import Guide, GuideInfo
 
 
 class GuideUserResource(NamespacedModelResource):
