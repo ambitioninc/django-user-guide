@@ -26,6 +26,7 @@ class GuideResource(NamespacedModelResource):
         filtering = {
             'id': ['exact'],
             'name': ['exact'],
+            'view_class_name': ['exact'],
             'creation_time': ALL_WITH_RELATIONS
         },
         ordering = {
@@ -46,7 +47,6 @@ class GuideInfoResource(NamespacedModelResource):
         authentication = SessionAuthentication()
         filtering = {
             'id': ['exact'],
-            'name': ['exact'],
             'finished': ALL,
             'finished_time': ALL_WITH_RELATIONS,
             'guide': ALL_WITH_RELATIONS,
