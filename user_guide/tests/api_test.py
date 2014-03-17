@@ -25,7 +25,7 @@ class GuideInfoResourceTest(ResourceTestCase):
             'guide__view_class_name': 'TestView',
             'user': user.id
         })
-        resp = self.api_client.get('/user-guide/api/guideinfo/')
+        resp = self.api_client.get('/api/guideinfo/')
         print resp
         guides = json.loads(resp)['objects']
         #self.assertEqual(1, 0)
