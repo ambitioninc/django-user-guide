@@ -12,6 +12,7 @@ class GuideUserResource(NamespacedModelResource):
         queryset = User.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
+        list_allowed_methods = []
         fields = ['email', 'date_joined']
         filtering = {'id': ['exact']}
 
