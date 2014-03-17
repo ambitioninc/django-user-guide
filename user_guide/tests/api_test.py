@@ -1,4 +1,4 @@
-#import json
+import json
 
 from django.contrib.auth.models import User
 from freezegun import freeze_time
@@ -27,5 +27,6 @@ class GuideInfoResourceTest(ResourceTestCase):
         })
         resp = self.api_client.get('/user-guide/guideinfo')
         print resp
-        self.assertEqual(1, 0)
-        #self.assertEqual(len(guides), 1)
+        guides = json.loads(resp)['objects']
+        #self.assertEqual(1, 0)
+        self.assertEqual(len(guides), 1)
