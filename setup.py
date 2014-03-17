@@ -36,12 +36,13 @@ setup(
     license='MIT',
     install_requires=[
         'django>=1.4',
+        'django-tastypie'
     ],
     tests_require=[
         'psycopg2',
         'django-nose',
         'south',
-        'django-tastypie'
+        'freezegun'
     ],
     test_suite='run_tests.run_tests',
     include_package_data=True,
