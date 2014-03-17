@@ -19,11 +19,11 @@ class GuideInfoResourceTest(ResourceTestCase):
             guide=guide
         )
 
-        self.api_client.client.login(username='test@test.com', password='test', format='json', data={
+        self.api_client.client.login(username='test@test.com', password='test')
+        resp = self.api_client.get('/api/guideinfo/', format='json', data={
             'guide__view_class_name': 'TestView',
             'user': user.id
         })
-        resp = self.api_client.get('/api/guideinfo/')
         print resp
         self.assertValidJSONResponse(resp)
         #self.assertEqual(1, 0)
