@@ -7,7 +7,7 @@ from user_guide.models import Guide, GuideInfo
 @freeze_time('2014-03-17 00:00:00')
 class GuideInfoResourceTest(ResourceTestCase):
     def test_guide_info_resource(self):
-        user = User.objects.create(username='test@test.com', email='test@test.com', password='test')
+        user = User.objects.create_user(username='test@test.com', email='test@test.com', password='test')
         guide = Guide.objects.create(
             html='<div>Hello Test!</div>',
             view_class_name='TestView',
