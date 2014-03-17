@@ -41,6 +41,7 @@ setup(
         'psycopg2',
         'django-nose',
         'south',
+        'django-tastypie'
     ],
     test_suite='run_tests.run_tests',
     include_package_data=True,
