@@ -1,0 +1,16 @@
+language: python
+python:
+  - '2.7'
+env:
+  - DJANGO=1.4 DB=postgres
+  - DJANGO=1.5 DB=postgres
+  - DJANGO=1.6.2 DB=postgres
+install:
+  - pip install -q coverage pep8 pyflakes Django==$DJANGO
+before_script:
+  - find . | grep .py$ | grep -v /migrations | xargs pep8 --max-line-length=120
+  - find . | grep .py$ | grep -v /migrations | grep -v __init__.py | xargs pyflakes
+  - psql -c 'CREATE DATABASE user_guide;' -U postgres
+script:
+  - coverage run --source='user_guide' --branch --omit='user_guide/migrations/*' setup.py test
+  - coverage report --fail-under=100 --show-missing
