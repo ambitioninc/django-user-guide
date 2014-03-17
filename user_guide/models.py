@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-USER_GUIDE_HTML_MAX = getattr(settings, 'USER_GUIDE_HTML_MAX')(512)
-USER_GUIDE_CLASS_NAME_MAX = getattr(settings, 'USER_GUIDE_CLASS_NAME_MAX')(256)
+USER_GUIDE_HTML_MAX = getattr(settings, 'USER_GUIDE_HTML_MAX', 512)
+USER_GUIDE_CLASS_NAME_MAX = getattr(settings, 'USER_GUIDE_CLASS_NAME_MAX', 256)
 
 
 class Guide(models.Model):
@@ -16,7 +16,7 @@ class Guide(models.Model):
     # The class name of the view that should render a guide.
     view_class_name = models.CharField(max_length=USER_GUIDE_CLASS_NAME_MAX)
     # The type of guide to render. The only guide type currently supported is 'Window.'
-    guide_type = models.ChoiceField(max_length=16, choices=('WINDOW', 'Window'), default='WINDOW')
+    guide_type = models.CharField(max_length=16, choices=(('WINDOW', 'Window'),), default='WINDOW')
     # The name of the guide. Mainly for display purposes.
     guide_name = models.CharField(max_length=64)
     # The creation time of the guide.
