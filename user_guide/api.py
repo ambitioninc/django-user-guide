@@ -54,7 +54,8 @@ class GuideInfoResource(NamespacedModelResource):
         },
         ordering = {
             'id': ['exact'],
-            'name': ['exact'],
             'finished': ALL,
-            'finished_time': ALL_WITH_RELATIONS
+            'finished_time': ALL_WITH_RELATIONS,
+            'guide': ALL_WITH_RELATIONS,
+            'user': ALL
         }
