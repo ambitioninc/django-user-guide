@@ -16,7 +16,6 @@ class GuideUserResource(NamespacedModelResource):
         queryset = User.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
-        include_resource_uri=True
         list_allowed_methods = ['get']
         fields = ['email', 'date_joined']
         filtering = {
@@ -36,7 +35,6 @@ class GuideResource(NamespacedModelResource):
         queryset = Guide.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
-        include_resource_uri=True
         filtering = {
             'id': ['exact'],
             'view_class_name': ALL,
@@ -58,7 +56,6 @@ class GuideInfoResource(NamespacedModelResource):
         queryset = GuideInfo.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
-        include_resource_uri=True
         list_allowed_methods = ['get', 'put']
         fields_allowed_update = ['finished']
         filtering = {
@@ -88,6 +85,9 @@ class GuideInfoResource(NamespacedModelResource):
                     ', '.join(self._meta.fields_allowed_update)
                 ))
             )
+
+        deserialized['finished_time'] = datetime.now()
+
         return super(GuideInfoResource, self).alter_deserialized_detail_data(request, deserialized)
 
     def put_detail(self, request, **kwargs):

@@ -53,7 +53,7 @@ def run_tests(*test_args, **kwargs):
         patch_for_test_db_setup()
 
     if not test_args:
-        test_args = ['user_guide']
+        test_args = ['user_guide', 'test_project']
 
     kwargs.setdefault('interactive', False)
 
