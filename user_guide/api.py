@@ -7,6 +7,7 @@ from user_guide.models import Guide, GuideInfo
 
 
 class GuideUserResource(NamespacedModelResource):
+
     class Meta:
         urlconf_namespace = 'user_guide'
         queryset = User.objects.all()
@@ -14,10 +15,18 @@ class GuideUserResource(NamespacedModelResource):
         authentication = SessionAuthentication()
         list_allowed_methods = []
         fields = ['email', 'date_joined']
-        filtering = {'id': ['exact']}
+        filtering = {
+            'id': ['exact'],
+            'email': ['exact']
+        }
+        ordering = {
+            'id': ALL,
+            'email': ALL
+        }
 
 
 class GuideResource(NamespacedModelResource):
+
     class Meta:
         urlconf_namespace = 'user_guide'
         queryset = Guide.objects.all()
@@ -25,10 +34,9 @@ class GuideResource(NamespacedModelResource):
         authentication = SessionAuthentication()
         filtering = {
             'id': ['exact'],
-            'name': ['exact'],
-            'view_class_name': ['exact'],
+            'view_class_name': ALL,
             'creation_time': ALL_WITH_RELATIONS
-        },
+        }
         ordering = {
             'id': ['exact'],
             'name': ['exact'],
@@ -37,7 +45,7 @@ class GuideResource(NamespacedModelResource):
 
 
 class GuideInfoResource(NamespacedModelResource):
-    user = fields.ForeignKey(GuideUserResource, 'guide_user', full=True)
+    user = fields.ForeignKey(GuideUserResource, 'user', full=True)
     guide = fields.ForeignKey(GuideResource, 'guide', full=True)
 
     class Meta:
@@ -51,7 +59,7 @@ class GuideInfoResource(NamespacedModelResource):
             'finished_time': ALL_WITH_RELATIONS,
             'guide': ALL_WITH_RELATIONS,
             'user': ALL
-        },
+        }
         ordering = {
             'id': ['exact'],
             'finished': ALL,
