@@ -1,5 +1,5 @@
 import os
-from os.path import dirname
+
 
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE", ".settings")
