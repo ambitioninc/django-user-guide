@@ -18,7 +18,7 @@ class Guide(models.Model):
     # The type of guide to render. The only guide type currently supported is 'Window.'
     guide_type = models.CharField(max_length=16, choices=(('WINDOW', 'Window'),), default='WINDOW')
     # The name of the guide. Mainly for display purposes.
-    guide_name = models.CharField(max_length=64)
+    guide_name = models.CharField(max_length=64, unique=True)
     # The creation time of the guide.
     creation_time = models.DateTimeField(auto_now_add=True)
 
@@ -35,3 +35,6 @@ class GuideInfo(models.Model):
     finished = models.BooleanField(default=False)
     # Save the finished time for convenience
     finished_time = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'guide')
