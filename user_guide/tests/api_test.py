@@ -23,7 +23,6 @@ class GuideInfoResourceTest(ResourceTestCase):
         self.guides = [
             Guide.objects.create(
                 html='<div>Hello test {0}!</div>'.format(i),
-                view_class_name='TestView',
                 guide_name='Test Guide {0}'.format(i),
                 guide_type='Window'
             )
@@ -48,7 +47,7 @@ class GuideInfoResourceTest(ResourceTestCase):
         # Log in and make a request
         self.api_client.client.login(username='test0@test.com', password='test')
         resp = self.api_client.get('/api/guideinfo/', format='json', data={
-            'guide__view_class_name': 'TestView',
+            'guide__guide_name__in': ['Test Guide 0', 'Test Guide 1'],
             'order_by': 'user__email'
         })
         self.assertValidJSONResponse(resp)

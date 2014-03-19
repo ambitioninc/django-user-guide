@@ -37,7 +37,8 @@ class GuideResource(NamespacedModelResource):
         authentication = SessionAuthentication()
         filtering = {
             'id': ['exact'],
-            'view_class_name': ALL,
+            'guide_name': ALL_WITH_RELATIONS,
+            'guide_tag': ALL_WITH_RELATIONS,
             'creation_time': ALL_WITH_RELATIONS
         }
         ordering = {
@@ -86,7 +87,8 @@ class GuideInfoResource(NamespacedModelResource):
                 ))
             )
 
-        deserialized['finished_time'] = datetime.now()
+        if deserialized['finished']:  # Update the finished time
+            deserialized['finished_time'] = datetime.now()
 
         return super(GuideInfoResource, self).alter_deserialized_detail_data(request, deserialized)
 

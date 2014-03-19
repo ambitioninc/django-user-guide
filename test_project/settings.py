@@ -3,7 +3,10 @@ import os
 
 # User guide settings
 USER_GUIDE_HTML_MAX = 256
-USER_GUIDE_CLASS_NAME_MAX = 256
+USER_GUIDE_TAG_MAX = 256
+USER_GUIDE_SHOW_MAX = 5
+USER_GUIDE_CSS_URL = 'test.css'
+USER_GUIDE_JS_URL = 'test.js'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -84,6 +87,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '../static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -135,7 +139,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     'django_nose',
     'south',
     'test_project',
