@@ -12,9 +12,10 @@ class Migration(SchemaMigration):
         db.create_table(u'user_guide_guide', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('html', self.gf('django.db.models.fields.TextField')(max_length=256)),
-            ('view_class_name', self.gf('django.db.models.fields.CharField')(max_length=256)),
             ('guide_type', self.gf('django.db.models.fields.CharField')(default='WINDOW', max_length=16)),
             ('guide_name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=64)),
+            ('guide_tag', self.gf('django.db.models.fields.CharField')(default='all', max_length=256)),
+            ('guide_order', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('creation_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'user_guide', ['Guide'])
@@ -85,10 +86,11 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Guide'},
             'creation_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'guide_name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '64'}),
+            'guide_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'guide_tag': ('django.db.models.fields.CharField', [], {'default': "'all'", 'max_length': '256'}),
             'guide_type': ('django.db.models.fields.CharField', [], {'default': "'WINDOW'", 'max_length': '16'}),
             'html': ('django.db.models.fields.TextField', [], {'max_length': '256'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'view_class_name': ('django.db.models.fields.CharField', [], {'max_length': '256'})
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'user_guide.guideinfo': {
             'Meta': {'unique_together': "(('user', 'guide'),)", 'object_name': 'GuideInfo'},

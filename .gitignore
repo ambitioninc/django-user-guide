@@ -18,3 +18,11 @@
 # Virtual enviornment
 env/
 
+# Js Stuff
+node_modules/
+npm-debug.log
+.grunt/
+.tmp/
+_SpecRunner.html
+
+
