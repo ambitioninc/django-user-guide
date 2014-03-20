@@ -47,7 +47,7 @@ if not settings.configured:
         USER_GUIDE_SHOW_MAX=5,
         USER_GUIDE_CSS_URL='custom-style.css',
         USER_GUIDE_JS_URL='custom-script.js',
-        STATIC_URL='/static/'
+        STATIC_URL='/collectstatic/'
     )
 
 from django_nose import NoseTestSuiteRunner
