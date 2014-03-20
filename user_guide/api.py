@@ -79,7 +79,6 @@ class GuideInfoResource(NamespacedModelResource):
         Enforces that the request conforms to PUT guidelines.
             - A user can only update the fields specified in fields_allowed_update.
         """
-
         if set(deserialized.keys()) - set(self._meta.fields_allowed_update):
             raise ImmediateHttpResponse(
                 response=http.HttpBadRequest('Can only update fields: {0}'.format(
@@ -87,8 +86,8 @@ class GuideInfoResource(NamespacedModelResource):
                 ))
             )
 
-        if deserialized['finished']:  # Update the finished time
-            deserialized['finished_time'] = datetime.now()
+        # Update the finished time
+        deserialized['finished_time'] = datetime.now()
 
         return super(GuideInfoResource, self).alter_deserialized_detail_data(request, deserialized)
 
@@ -101,7 +100,7 @@ class GuideInfoResource(NamespacedModelResource):
 
         if guide_info.user.id != request.user.id:
             raise ImmediateHttpResponse(
-                response=http.HttpBadRequest('User must match request\'s user.')
+                response=http.HttpUnauthorized('PUT user must match request\'s user.')
             )
 
         super(GuideInfoResource, self).put_detail(request, **kwargs)

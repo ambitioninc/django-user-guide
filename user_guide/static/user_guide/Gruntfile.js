@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
     var jsFiles = ['build/*.js'],
-        testFiles = ['test/*.js'],
+        testFiles = ['tests/*.js'],
         lintFiles = ['Gruntfile.js'].concat(jsFiles, testFiles),
         npmTasks = [
             'grunt-contrib-jshint',

@@ -42,6 +42,12 @@ if not settings.configured:
         ),
         ROOT_URLCONF='user_guide.urls',
         DEBUG=False,
+        USER_GUIDE_HTML_MAX=256,
+        USER_GUIDE_TAG_MAX=256,
+        USER_GUIDE_SHOW_MAX=5,
+        USER_GUIDE_CSS_URL='custom-style.css',
+        USER_GUIDE_JS_URL='custom-script.js',
+        STATIC_URL='/static/'
     )
 
 from django_nose import NoseTestSuiteRunner
@@ -53,7 +59,7 @@ def run_tests(*test_args, **kwargs):
         patch_for_test_db_setup()
 
     if not test_args:
-        test_args = ['user_guide', 'test_project']
+        test_args = ['user_guide']
 
     kwargs.setdefault('interactive', False)
 
