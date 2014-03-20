@@ -11,5 +11,6 @@ before_script:
   - find . | grep .py$ | grep -v /migrations | grep -v __init__.py | xargs pyflakes
   - psql -c 'CREATE DATABASE user_guide;' -U postgres
 script:
+  - (cd user_guide/static/user_guide && npm install && npm test)
   - coverage run --source='user_guide' --branch --omit='user_guide/migrations/*' setup.py test
   - coverage report --fail-under=100 --show-missing
