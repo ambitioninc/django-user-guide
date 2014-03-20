@@ -103,7 +103,7 @@
 
         /**
          * @method showEl
-         * Shows an item. If a button
+         * Shows an item. Sets the display property to 'block' unless it appears in {@link inlineBlockItems}.
          * @param {HTMLElement} item - The item to show.
          */
         showEl: function showEl(item) {

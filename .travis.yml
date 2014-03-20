@@ -10,9 +10,6 @@ before_script:
   - find . | grep .py$ | grep -v /migrations | xargs pep8 --max-line-length=120
   - find . | grep .py$ | grep -v /migrations | grep -v __init__.py | xargs pyflakes
   - psql -c 'CREATE DATABASE user_guide;' -U postgres
-cache:
-  directories:
-    - user_guide/static/user_guide/node_modules
 script:
   - (cd user_guide/static/user_guide && npm install && npm test)
   - coverage run --source='user_guide' --branch --omit='user_guide/migrations/*' setup.py test

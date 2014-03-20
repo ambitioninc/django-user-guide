@@ -67,7 +67,7 @@ class GuideInfoResourceTest(ResourceTestCase):
         self.assertEqual(objects[0]['guide']['creation_time'], '2014-03-17T00:00:00')
         self.assertEqual(objects[1]['guide']['creation_time'], '2014-03-17T00:00:00')
 
-    def test_post_guide_info_resource(self):
+    def test_put_guide_info_resource(self):
         guide_infos = [
             GuideInfo.objects.create(
                 user=self.users[0],
@@ -94,7 +94,7 @@ class GuideInfoResourceTest(ResourceTestCase):
         resp = self.api_client.put('/api/guideinfo/{0}/'.format(guide_infos[2].id), format='json', data={
             'finished': True
         })
-        self.assertHttpBadRequest(resp)
+        self.assertHttpUnauthorized(resp)
 
         # Try to put no data
         resp = self.api_client.put('/api/guideinfo/{0}/'.format(guide_infos[0].id), format='json')
