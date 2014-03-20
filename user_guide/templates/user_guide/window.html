@@ -1,0 +1,33 @@
+<div class="django-user-guide">
+    <link rel="stylesheet" href="{{ css_href }}">
+
+    {% if custom_css_href %}
+    <link rel="stylesheet" href="{{ custom_css_href }}">
+    {% endif %}
+
+    <div class="django-user-guide-mask">
+        <div class="django-user-guide-window">
+            <div class="django-user-guide-close-div">x</div>
+
+            <div class="django-user-guide-html-wrapper">
+                {{html|safe}}
+            </div>
+
+            <div class="django-user-guide-window-nav">
+                <button class="django-user-guide-btn django-user-guide-back-btn">&lt; Back</button>
+                <button class="django-user-guide-btn django-user-guide-next-btn">Next &gt;</button>
+                <button class="django-user-guide-btn django-user-guide-done-btn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ js_src }}"></script>
+
+    {% if custom_js_src %}
+    <script src="{{ custom_js_src }}"></script>
+    {% endif %}
+
+    <script>
+        (new DjangoUserGuide()).run();
+    </script>
+</div>
