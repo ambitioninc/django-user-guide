@@ -176,11 +176,23 @@ describe('DjangoUserGuide', function() {
 
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should not show the guide
 
+        //buttons exist, but don't do anything
+        expect(dug.getBackBtn()).not.toBeUndefined();
+        expect(dug.getNextBtn()).not.toBeUndefined();
+        expect(dug.getDoneBtn()).not.toBeUndefined();
+        expect(dug.getCloseDiv()).not.toBeUndefined();
+        expect(getRenderedStyle(dug.getBackBtn(), 'display')).toBe('none');
+        expect(getRenderedStyle(dug.getDoneBtn(), 'display')).toBe('none');
+        expect(getRenderedStyle(dug.getNextBtn(), 'display')).toBe('none');
+        expect(getRenderedStyle(dug.getCloseDiv(), 'display')).toBe('block'); //hidden by parent
+
         //manaing to click the buttons should not cause trouble
         dug.onBackClick();
         dug.onNextClick();
         dug.onDoneClick();
         dug.onCloseClick();
+
+        expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
 
         removeDom(guide); //clean up the dom
     });

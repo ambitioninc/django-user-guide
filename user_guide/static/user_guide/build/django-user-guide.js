@@ -179,9 +179,9 @@
          */
         show: function show() {
             if (this.getItems().length) { //we have some guides
+                this.addListeners();
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
-                this.addListeners();
                 this.showHideBtns();
             }
         },
@@ -234,7 +234,6 @@
          * Runs the entire process for showing the guide window.
          */
         run: function run() {
-            this.addListeners();
             this.show();
         }
     };
