@@ -35,12 +35,13 @@ setup(
     ],
     license='MIT',
     install_requires=[
-        'django>=1.4',
-        'django-tastypie'
+        'django>=1.6',
+        'django-tastypie>=0.11'
     ],
     tests_require=[
         'psycopg2',
         'django-nose',
+        'django-dynamic-fixture',
         'south',
         'freezegun'
     ],

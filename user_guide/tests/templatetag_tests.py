@@ -25,7 +25,7 @@ class TemplateTagTest(TestCase):
                 guide_name='Test Guide {0}'.format(i),
                 guide_type='Window',
                 guide_tag='tag{0}'.format(i),
-                guide_order=i
+                guide_importance=i
             )
             for i in xrange(0, 10)
         ]
@@ -43,24 +43,30 @@ class TemplateTagTest(TestCase):
             'request': r
         })
 
-        # Create a guide info for each guide
-        for guide in self.guides:
-            GuideInfo.objects.create(user=self.users[0], guide=guide)
+        # Create an info for each guide
+        guide_infos = [GuideInfo.objects.create(user=self.users[0], guide=guide) for guide in self.guides]
 
         # Render the template
         rendered = t.render(c)
 
         # Make sure the correct guides show up, guide_order should apply here
         self.assertTrue('Hello test 9!' in rendered)
+        self.assertTrue('data-guide="{0}"'.format(guide_infos[9].id) in rendered)
         self.assertTrue('Hello test 8!' in rendered)
+        self.assertTrue('data-guide="{0}"'.format(guide_infos[8].id) in rendered)
         self.assertTrue('Hello test 7!' in rendered)
+        self.assertTrue('data-guide="{0}"'.format(guide_infos[7].id) in rendered)
         self.assertTrue('Hello test 6!' in rendered)
+        self.assertTrue('data-guide="{0}"'.format(guide_infos[6].id) in rendered)
         self.assertTrue('Hello test 5!' in rendered)
+        self.assertTrue('data-guide="{0}"'.format(guide_infos[5].id) in rendered)
         self.assertTrue('Hello test 4!' not in rendered)  # Should not have rendered 6 guides
         self.assertTrue('Hello test 3!' not in rendered)  # Should not have rendered 7 guides
         self.assertTrue('Hello test 2!' not in rendered)  # Should not have rendered 8 guides
         self.assertTrue('Hello test 1!' not in rendered)  # Should not have rendered 9 guides
         self.assertTrue('Hello test 0!' not in rendered)  # Should not have rendered 10 guides
+        self.assertTrue('django-user-guide.css' in rendered)  # Should have django-user-guide style sheet
+        self.assertTrue('django-user-guide.js' in rendered)  # Should have django-user-guide script
         self.assertTrue('custom-style.css' in rendered)  # Should have custom style sheet
         self.assertTrue('custom-script.js' in rendered)  # Should have custom script
 

@@ -85,6 +85,12 @@
 
         /**
          * @type {Object}
+         * The items that have been finished.
+         */
+        finishedItems: {},
+
+        /**
+         * @type {Object}
          * Objects that should be shown inline-block instead of block.
          * Add more items here as needed.
          */
@@ -174,6 +180,38 @@
         },
 
         /**
+         * @method put
+         * Makes a PUT request to the given url, with the given data.
+         * @param {String} url - The url to PUT.
+         * @param {Object} data - The data to PUT.
+         */
+        put: function(url, data) {
+            var req = new XMLHttpRequest();
+
+            req.open('PUT', url, true);
+            req.setRequestHeader('Content-Type', 'application/json');
+            req.send(JSON.stringify(data));
+        },
+
+        /**
+         * @method finishItem
+         * Marks an item finished and calls {@link put}.
+         * @param {HTMLDivElement} item - The item to mark finished.
+         */
+        finishItem: function(item) {
+            var guideId = item ? item.getAttribute('data-guide') : null;
+
+            if (guideId && !this.finishedItems[guideId]) {
+                this.finishedItems[guideId] = true;
+                this.put('/user-guide/api/guideinfo/' + guideId + '/', {
+                    'is_finished': true
+                });
+            }
+
+            return item;
+        },
+
+        /**
          * @method show
          * Shows the entire guide.
          */
@@ -209,7 +247,8 @@
          * @method onDoneClick
          * Handler for finishing the guide window.
          */
-        onDoneClick: function onCloseClick() {
+        onDoneClick: function onDoneClick() {
+            this.finishItem(this.getItems()[this.itemIndex]);
             this.hideEl(this.getGuide());
         },
 
@@ -218,6 +257,7 @@
          * Handler for showing the next guide.
          */
         onNextClick: function onNextClick() {
+            this.finishItem(this.getItems()[this.itemIndex]);
             this.showNextGuide();
         },
 

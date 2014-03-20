@@ -11,11 +11,11 @@ class Migration(SchemaMigration):
         # Adding model 'Guide'
         db.create_table(u'user_guide_guide', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('html', self.gf('django.db.models.fields.TextField')(max_length=256)),
+            ('html', self.gf('django.db.models.fields.TextField')()),
             ('guide_type', self.gf('django.db.models.fields.CharField')(default='WINDOW', max_length=16)),
             ('guide_name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=64)),
-            ('guide_tag', self.gf('django.db.models.fields.CharField')(default='all', max_length=256)),
-            ('guide_order', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('guide_tag', self.gf('django.db.models.fields.TextField')(default='all')),
+            ('guide_importance', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('creation_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'user_guide', ['Guide'])
@@ -25,7 +25,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('guide', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['user_guide.Guide'])),
-            ('finished', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_finished', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('finished_time', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'user_guide', ['GuideInfo'])
@@ -85,19 +85,19 @@ class Migration(SchemaMigration):
         u'user_guide.guide': {
             'Meta': {'object_name': 'Guide'},
             'creation_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'guide_importance': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'guide_name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '64'}),
-            'guide_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'guide_tag': ('django.db.models.fields.CharField', [], {'default': "'all'", 'max_length': '256'}),
+            'guide_tag': ('django.db.models.fields.TextField', [], {'default': "'all'"}),
             'guide_type': ('django.db.models.fields.CharField', [], {'default': "'WINDOW'", 'max_length': '16'}),
-            'html': ('django.db.models.fields.TextField', [], {'max_length': '256'}),
+            'html': ('django.db.models.fields.TextField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'user_guide.guideinfo': {
-            'Meta': {'unique_together': "(('user', 'guide'),)", 'object_name': 'GuideInfo'},
-            'finished': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'Meta': {'ordering': "['-guide__guide_order', 'guide__creation_time']", 'unique_together': "(('user', 'guide'),)", 'object_name': 'GuideInfo'},
             'finished_time': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'guide': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['user_guide.Guide']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_finished': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         }
     }

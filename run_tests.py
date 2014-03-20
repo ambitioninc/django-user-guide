@@ -42,8 +42,6 @@ if not settings.configured:
         ),
         ROOT_URLCONF='user_guide.urls',
         DEBUG=False,
-        USER_GUIDE_HTML_MAX=256,
-        USER_GUIDE_TAG_MAX=256,
         USER_GUIDE_SHOW_MAX=5,
         USER_GUIDE_CSS_URL='custom-style.css',
         USER_GUIDE_JS_URL='custom-script.js',

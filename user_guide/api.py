@@ -11,13 +11,16 @@ from user_guide.models import Guide, GuideInfo
 
 
 class GuideUserResource(NamespacedModelResource):
-
+    """
+    Tastypie resource for guide users. Not exposed via url, does not allow any REST methods.
+    Only used by the GuideInfoResource.
+    """
     class Meta:
         urlconf_namespace = 'user_guide'
         queryset = User.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
-        list_allowed_methods = ['get']
+        list_allowed_methods = []
         fields = ['email', 'date_joined']
         filtering = {
             'id': ['exact'],
@@ -30,12 +33,15 @@ class GuideUserResource(NamespacedModelResource):
 
 
 class GuideResource(NamespacedModelResource):
-
+    """
+    Tastypie resource for guides. Accessible via url, only allows GET method.
+    """
     class Meta:
         urlconf_namespace = 'user_guide'
         queryset = Guide.objects.all()
         authorization = Authorization()
         authentication = SessionAuthentication()
+        list_allowed_methods = ['get']
         filtering = {
             'id': ['exact'],
             'guide_name': ALL_WITH_RELATIONS,
@@ -50,6 +56,9 @@ class GuideResource(NamespacedModelResource):
 
 
 class GuideInfoResource(NamespacedModelResource):
+    """
+    Tastypie resource for guide info. Accessible via url, allows GET and PUT methods.
+    """
     user = fields.ForeignKey(GuideUserResource, 'user', full=True)
     guide = fields.ForeignKey(GuideResource, 'guide', full=True)
 
@@ -59,17 +68,17 @@ class GuideInfoResource(NamespacedModelResource):
         authorization = Authorization()
         authentication = SessionAuthentication()
         list_allowed_methods = ['get', 'put']
-        fields_allowed_update = ['finished']
+        fields_allowed_update = ['is_finished']
         filtering = {
             'id': ['exact'],
-            'finished': ALL,
+            'is_finished': ALL,
             'finished_time': ALL_WITH_RELATIONS,
             'guide': ALL_WITH_RELATIONS,
             'user': ALL_WITH_RELATIONS
         }
         ordering = {
             'id': ['exact'],
-            'finished': ALL,
+            'is_finished': ALL,
             'finished_time': ALL_WITH_RELATIONS,
             'guide': ALL_WITH_RELATIONS,
             'user': ALL_WITH_RELATIONS
@@ -88,7 +97,7 @@ class GuideInfoResource(NamespacedModelResource):
             )
 
         # Update the finished time
-        deserialized['finished_time'] = datetime.now()
+        deserialized['finished_time'] = datetime.utcnow()
 
         return super(GuideInfoResource, self).alter_deserialized_detail_data(request, deserialized)
 
@@ -104,4 +113,4 @@ class GuideInfoResource(NamespacedModelResource):
                 response=http.HttpUnauthorized('PUT user must match request\'s user.')
             )
 
-        super(GuideInfoResource, self).put_detail(request, **kwargs)
+        return super(GuideInfoResource, self).put_detail(request, **kwargs)

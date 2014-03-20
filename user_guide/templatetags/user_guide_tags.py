@@ -43,11 +43,11 @@ def user_guide(context, *args, **kwargs):
     """
     user = context['request'].user if 'request' in context and hasattr(context['request'], 'user') else None
 
-    if user:  # No one is logged in
+    if user and user.is_authenticated():  # No one is logged in
         limit = kwargs.get('limit', USER_GUIDE_SHOW_MAX)
         filters = {
             'user': user,
-            'finished': False
+            'is_finished': False
         }
 
         # Handle special filters
@@ -56,14 +56,13 @@ def user_guide(context, *args, **kwargs):
         if kwargs.get('guide_tags'):
             filters['guide__guide_tag__in'] = kwargs.get('guide_tags')
 
-        # Get the guides for the info objects
-        guide_infos = GuideInfo.objects.select_related('guide').filter(**filters).order_by('-guide__guide_order')
-        guides = [guide_info.guide for guide_info in guide_infos]
-        html = ''
-
-        # Spit out guide items
-        for guide in guides[:limit]:
-            html += '<div class="django-user-guide-item">' + guide.html + '</div>'
+        # Set the html
+        html = ''.join((
+            '<div data-guide="{0}" class="django-user-guide-item">{1}</div>'.format(
+                guide_info.id,
+                guide_info.guide.html
+            ) for guide_info in GuideInfo.objects.select_related('guide').filter(**filters).only('guide')[:limit]
+        ))
 
         # Return the rendered template with the guide html
         return loader.render_to_string('user_guide/window.html', {
