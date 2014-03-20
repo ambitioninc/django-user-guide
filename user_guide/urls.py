@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
 from tastypie.api import NamespacedApi
 
 from user_guide.api import GuideResource, GuideInfoResource
