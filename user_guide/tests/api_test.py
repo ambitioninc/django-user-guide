@@ -30,6 +30,7 @@ class GuideInfoResourceTest(ResourceTestCase):
         ]
 
     def test_get_guide_info_resource(self):
+
         # Create a few guide info objects
         GuideInfo.objects.create(
             user=self.users[0],
