@@ -173,7 +173,6 @@ templates/cool_project/cool_template.html
         {% load user_guide_tags %}
         {% user_guide guide_tags=cool_guide_tags %}
         <h1>Hello User Guides!</h1>
-
     </body>
 </html>
 ```
