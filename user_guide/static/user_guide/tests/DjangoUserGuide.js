@@ -21,10 +21,6 @@ describe('DjangoUserGuide', function() {
         return getComputedStyle(el).getPropertyValue(prop);
     }
 
-    it('should fail a test', function() {
-        expect(1).toBe(2);
-    });
-
     it('should handle many items', function() {
         var dug = new window.DjangoUserGuide(),
             items = null,
