@@ -15,7 +15,7 @@ creating a `Guide` object and linking them to your users. Use the convenient `{%
 
 ## <a name="guide">Guide</a>
 
-First you will need to one or more `Guide` objects. A `Guide` object consists of:
+First you will need to create one or more `Guide` objects. A `Guide` object consists of:
 
 #### guide_name (required, max_length=64, unique)
 
@@ -96,11 +96,11 @@ Django User Guide has several configurations that can finely tune your user guid
 
 #### USER_GUIDE_SHOW_MAX (default=10)
 
-The maximum number of guides to show for a single page load.
+The maximum number of guides to show for a single page load. If a user had 20 possible guides and `USER_GUIDE_SHOW_MAX` was set to 5, only the first 5 (based on `guide_importance` and `creation_time`) guides would be shown.
 
 #### USER_GUIDE_CSS_URL (default=None)
 
-The path to a custom style sheet for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
+The path to a custom style sheet for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included. See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
 
 #### USER_GUIDE_JS_URL (default=None)
 
@@ -152,13 +152,13 @@ show your users their relevant guides.
 views.py
 
 ```python
-django.views.generic import TemplateView
+from django.views.generic import TemplateView
 
 class CoolView(TemplateView):
     template_name = 'cool_project/cool_template.html'
 
     def get_context_data(self, **kwargs):
-        context = super(MyCoolView, self).get_context_data(**kwargs)
+        context = super(CoolView, self).get_context_data(**kwargs)
         context['cool_guide_tags'] = ['general', 'welcome', 'onboarding']
         return context
 ```
@@ -168,7 +168,10 @@ templates/cool_project/cool_template.html
 ```html
 <!doctype html>
 <html>
-    <head></head>
+    <head>
+        <meta charset="utf-8">
+        <title>Hello User Guides</title>
+    </head>
     <body>
         {% load user_guide_tags %}
         {% user_guide guide_tags=cool_guide_tags %}
