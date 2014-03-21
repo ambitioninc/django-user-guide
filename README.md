@@ -146,7 +146,7 @@ USER_GUIDE_JS_URL = 'path/to/custom-script.js'
 
 ## <a name="putting-it-all-together">Putting It All Together</a>
 
-Assuming you have created some guides and guide info objects, this is how you would
+Assuming you have created some `Guide` and `GuideInfo` objects, this is how you would
 show your users their relevant guides.
 
 views.py
