@@ -2,8 +2,8 @@
 ##Django User Guide
 
 
-Django User Guide is a `django>=1.6` app that shows configurable, single-pane HTML guides to users. Showing a guide to all of your users is as easy as
-creating a `Guide` object and linking them to your users. Use the convenient `{% user_guide %}` template tag where you want guides to appear and Django User Guide does the rest. When a user visits a page containing the template tag, they are greeted with relevant guides. Django User Guide decides what guide(s) a user needs to see and displays them in modal window with controls for cycling through those guides. Django User Guide tracks plenty of meta-data: creation times, guide importance, if the guide has been finished by specific users, finished times, etc.
+Django User Guide is a `django>=1.6` app that shows configurable, self-contained HTML guides to users. Showing a guide to all of your users is as easy as
+creating a `Guide` object and linking them to your users. Use the convenient `{% user_guide %}` template tag where you want guides to appear and Django User Guide does the rest. When a user visits a page containing the template tag, they are greeted with relevant guides. Django User Guide decides what guide(s) a user needs to see and displays them in a modal window with controls for cycling through those guides. Django User Guide tracks plenty of meta-data: creation times, guide importance, if the guide has been finished by specific users, finished times, etc.
 
 ## Guide
 
@@ -16,50 +16,104 @@ This is a semantic, unique identifier for a guide. Allows for easy identificatio
 #### html
 
 The markup for the guide. Use this field to communicate with your users in a meaningful way.
-Note that the data in this field is marked as safe before output, so it would be a bad idea to put untrusted data into it.
+Note that the data in this field is output with `{% html|safe %}`, so it would be a bad idea to put untrusted data into it.
 
 #### guide_tag (default='all')
 
-A custom tag for grouping several guides together. Specifically designed to be used for filtering. If you had `my_guide_tag_list = ['welcome', 'onboard']` in your context, you would use `{% user_guide guide_tags=my_guide_tag_list %}` to show users all guides with tags 'welcome' and 'onboard' specifically.
+A custom tag for grouping several guides together. Specifically designed to be used for filtering. If you had `my_guide_tag_list = ['welcome', 'onboarding']` in your context, you would use `{% user_guide guide_tags=my_guide_tag_list %}` to show users all guides with tags 'welcome' and 'onboard' specifically.
 
-### guide_importance (default=0)
+#### guide_importance (default=0)
 
 A number representing the importance of the guide. Guides with a higher `guide_importance` are shown first. Guides are always sorted by `guide_importance`, then `creation_time`.
 
-### guide_type (default='Window')
+#### guide_type (default='Window')
 
 The rendering type for the guide. Only a modal window is currently supported. Future support for positioned coach-marks and other elements is planned.
 
-### creation_time (auto_now_add=True)
+#### creation_time (auto_now_add=True)
 
 Stores the current datetime when a `Guide` is created.
+
+
+#### Usage
 
 ```python
 from user_guide.models import Guide
 
-Guide.objects.create(html='<div>Hello Guide!</div>', guide_name='First Guide', guide_importance=5)
+Guide.objects.create(
+    html='<div>Hello Guide!</div>',
+    guide_name='First Guide',
+    guide_tag='onboarding',
+    guide_importance=5
+)
+
 ```
 
 ## GuideInfo
 
-The next step is creating `GuideInfo` objects. These are used to connect a `Guide` to a ``User`. A `GuideInfo` object consists of:
+The next step is creating `GuideInfo` objects. These are used to connect a `Guide` to a `User`. A `GuideInfo` object consists of:
 
-### user (required)
+#### user (required)
 
-The `User` that should see a `Guide`. Any number of `User`s can be pointed to a `Guide`.
+The `User` that should see a `Guide`. Any number of `User` objects can be pointed to a `Guide`.
 
-### guide (required)
+#### guide (required)
 
-The `Guide` to show a `User`. Any number of `Guide`s can be tied to a `User`.
+The `Guide` to show a `User`. Any number of `Guide` objects can be tied to a `User`.
 
-### is_finished (default=False)
+#### is_finished (default=False)
 
-Marked true when the `User` has completed some [finishing criteria](#finishing-criteria). Also by default, users are only shown `Guide`s with `is_finished=False`.
+Marked true when the `User` has completed some [finishing criteria](#finishing-criteria). By default, users are only shown `Guide` objects with `is_finished=False`.
 
-### finished_time
+#### finished_time
 
-When the finishing criteria is met, the value of `datetime.utcnow()` is stored.
+When the [finishing criteria](#finishing-criteria) is met, the value of `datetime.utcnow()` is stored.
 
+#### Usage
+
+```python
+from django.contrib.auth.models import User
+
+from user_guide.models import Guide, GuideInfo
+
+# Show the guide with the name 'First Guide' to the given user
+guide = Guide.objects.get(guide_name='First Guide')
+user = User.objects.get(id=1)
+
+GuideInfo.objects.create(guide=guide, user=user)
+
+```
+
+## Putting It All Together
+
+views.py
+
+```python
+class CoolView(TemplateView):
+    template_name = 'cool_project/cool_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyCoolView, self).get_context_data(**kwargs)
+        context['cool_guide_tags'] = ['general', 'welcome', 'onboarding']
+        return context
+
+```
+
+templates/cool_project/cool_template.html
+
+```html
+<!doctype html>
+<html>
+    <head></head>
+    <body>
+        {% load user_guide_tags %}
+        {% user_guide guide_tags=cool_guide_tags %}
+        <h1>Hello User Guides!</h1>
+
+    </body>
+</html>
+
+```
 
 
 
