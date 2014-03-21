@@ -22,12 +22,16 @@ pip install git+https://github.com/ambitioninc/django-user-guide.git@0.1
 
 settings.py
 
+Add Django User Guide to your `INSTALLED_APPS` to get started:
+
 ```python
+
+# Simply add 'user_guide' to your installed apps.
+# Django User Guide relies on django.contrib.auth and django.contrib.staticfiles
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.sites',
-    'django.contrib.comments',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
