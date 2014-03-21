@@ -35,7 +35,7 @@ The rendering type for the `Guide`. Only a modal window is currently supported. 
 Stores the current datetime when a `Guide` is created.
 
 
-#### Usage
+## Guide usage
 
 ```python
 from user_guide.models import Guide
@@ -68,7 +68,7 @@ Marked true when the `User` has completed some [finishing criteria](#finishing-c
 
 When the [finishing criteria](#finishing-criteria) is met, the value of `datetime.utcnow()` is stored.
 
-#### Usage
+## GuideInfo usage
 
 ```python
 from django.contrib.auth.models import User
@@ -132,7 +132,7 @@ The path to any custom style sheets for Django User Guides. Added as a `link` ta
 
 The path to any custom js that needs to be added to Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
 
-#### Usage
+## Settings usage
 
 settings.py
 
@@ -143,4 +143,6 @@ USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
 USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
 ```
 
+## <a name='finishing-criteria'>Finishing criteria</a>
 
+Add some stuff about finishing criteria here.
