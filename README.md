@@ -46,7 +46,6 @@ Guide.objects.create(
     guide_tag='onboarding',
     guide_importance=5
 )
-
 ```
 
 ## GuideInfo
@@ -81,14 +80,18 @@ guide = Guide.objects.get(guide_name='First Guide')
 user = User.objects.get(id=1)
 
 GuideInfo.objects.create(guide=guide, user=user)
-
 ```
 
 ## Putting It All Together
 
+Assuming you have created some guides and guide info objects, this is how you would
+show your users their relevant guides.
+
 views.py
 
 ```python
+django.views.generic import TemplateView
+
 class CoolView(TemplateView):
     template_name = 'cool_project/cool_template.html'
 
@@ -96,7 +99,6 @@ class CoolView(TemplateView):
         context = super(MyCoolView, self).get_context_data(**kwargs)
         context['cool_guide_tags'] = ['general', 'welcome', 'onboarding']
         return context
-
 ```
 
 templates/cool_project/cool_template.html
@@ -112,8 +114,33 @@ templates/cool_project/cool_template.html
 
     </body>
 </html>
-
 ```
 
+## Settings
+
+Django User Guide has several configurations that can finely tune your user guide experience.
+
+#### USER_GUIDE_SHOW_MAX (default=10)
+
+The maximum number of guides to show for a single page load.
+
+#### USER_GUIDE_CSS_URL (default=None)
+
+The path to any custom style sheets for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
+
+#### USER_GUIDE_JS_URL (default=None)
+
+The path to any custom js that needs to be added to Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
+
+#### Usage
+
+settings.py
+
+```python
+# Django User Guide settings
+USER_GUIDE_SHOW_MAX = 5
+USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
+USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
+```
 
 
