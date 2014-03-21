@@ -117,7 +117,7 @@ USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
 USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
 ```
 
-## <name='finishing-criteria'>Finishing criteria</a>
+## <a name='finishing-criteria'>Finishing criteria</a>
 
 Finishing criteria are rules to marking a guide as finished. By default, they only need to press the 'next' or 'done' button on a guide. This behavior can be overridden by creating a custom script and adding it to the USER_GUIDE_JS_URL setting. The custom script only needs to override the `window.DjangoUserGuide.isFinished` method.
 
