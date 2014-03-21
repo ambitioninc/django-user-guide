@@ -28,6 +28,6 @@
     {% endif %}
 
     <script>
-        (new DjangoUserGuide()).run();
+        (new DjangoUserGuide({% csrf_token %})).run();
     </script>
 </div>

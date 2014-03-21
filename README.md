@@ -40,6 +40,28 @@ INSTALLED_APPS = (
 )
 ```
 
+Make sure Django's CsrfViewMiddleware is enabled:
+
+settings.py
+
+```python
+MIDDLEWARE_CLASSES = (
+    'django.middleware.csrf.CsrfViewMiddleware',
+)
+```
+
+Add Django User Guide's urls to your project:
+
+urls.py
+
+```python
+from django.conf.urls import include, patterns, url
+
+urlpatterns = patterns(
+    url(r'^user-guide/', include('user_guide.urls')),
+)
+```
+
 ## <a name="guide">Guide</a>
 
 First you will need to create one or more `Guide` objects. A `Guide` object consists of:
