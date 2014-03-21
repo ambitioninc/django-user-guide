@@ -11,11 +11,11 @@ First you will need to create a `Guide` object. A `Guide` object consists of:
 
 #### guide_name (required, max_length=64, unique)
 
-This is a semantic, unique identifier for a guide. Allows for easy identification and targeted filtering.
+This is a semantic, unique identifier for a `Guide`. Allows for easy identification and targeted filtering.
 
 #### html
 
-The markup for the guide. Use this field to communicate with your users in a meaningful way.
+The markup for the `Guide`. Use this field to communicate with your users in a meaningful way.
 Note that the data in this field is output with `{% html|safe %}`, so it would be a bad idea to put untrusted data into it.
 
 #### guide_tag (default='all')
@@ -24,11 +24,11 @@ A custom tag for grouping several guides together. Specifically designed to be u
 
 #### guide_importance (default=0)
 
-A number representing the importance of the guide. Guides with a higher `guide_importance` are shown first. Guides are always sorted by `guide_importance`, then `creation_time`.
+A number representing the importance of the `Guide`. `Guide` objects with a higher `guide_importance` are shown first. `Guide` objects are always sorted by `guide_importance`, then `creation_time`.
 
 #### guide_type (default='Window')
 
-The rendering type for the guide. Only a modal window is currently supported. Future support for positioned coach-marks and other elements is planned.
+The rendering type for the `Guide`. Only a modal window is currently supported. Future support for positioned coach-marks and other elements is planned.
 
 #### creation_time (auto_now_add=True)
 
