@@ -1,7 +1,13 @@
 (function() {
     'use strict';
 
-    window.DjangoUserGuide = function() {};
+    /**
+     * @constructor
+     * Sets the passed csrf token from the template.
+     */
+    window.DjangoUserGuide = function(csrfToken) {
+        this.csrfToken = csrfToken;
+    };
 
     window.DjangoUserGuide.prototype = {
 
@@ -189,6 +195,7 @@
             var req = new XMLHttpRequest();
 
             req.open('PUT', url, true);
+            req.setRequestHeader('X-CSRFToken', this.csrfToken);
             req.setRequestHeader('Content-Type', 'application/json');
             req.send(JSON.stringify(data));
         },
