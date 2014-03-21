@@ -1,5 +1,4 @@
 include README.md
 include LICENSE
-recursive-include user_guide/static/build *
+recursive-include user_guide/static/user_guide/build *
 recursive-include user_guide/templates *
-recursive-include user_guide/tests *
