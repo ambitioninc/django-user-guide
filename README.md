@@ -27,7 +27,7 @@ settings.py
 ```python
 
 # Simply add 'user_guide' to your installed apps.
-# Django User Guide relies on django.contrib.auth and django.contrib.staticfiles
+# Django User Guide relies on several basic django apps.
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.admin',
