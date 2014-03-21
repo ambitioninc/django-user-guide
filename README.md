@@ -6,12 +6,35 @@ Django User Guide is a `django>=1.6` app that shows configurable, self-contained
 creating a `Guide` object and linking them to your users. Use the convenient `{% user_guide %}` template tag where you want guides to appear and Django User Guide does the rest. When a user visits a page containing the template tag, they are greeted with relevant guides. Django User Guide decides what guide(s) a user needs to see and displays them in a modal window with controls for cycling through those guides. Django User Guide tracks plenty of meta-data: creation times, guide importance, if the guide has been finished by specific users, finished times, etc.
 
 ## Table of Contents
+1. [Installation](#installation)
 1. [Guide](#guide)
 1. [GuideInfo](#guide-info)
 1. [Settings](#settings)
 1. [Finishing Criteria](#finishing-criteria)
 1. [Putting It All Together](#putting-it-all-together)
 
+## <a name="installation">Installation</a>
+To install Django User Guide:
+
+```shell
+pip install git+https://github.com/ambitioninc/django-user-guide.git@0.1
+```
+
+settings.py
+
+```python
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.admin',
+    'django.contrib.sites',
+    'django.contrib.comments',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.contenttypes',
+    'user_guide',
+)
+```
 
 ## <a name="guide">Guide</a>
 
