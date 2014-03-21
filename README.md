@@ -100,11 +100,11 @@ The maximum number of guides to show for a single page load.
 
 #### USER_GUIDE_CSS_URL (default=None)
 
-The path to any custom style sheets for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
+The path to a custom style sheet for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
 
 #### USER_GUIDE_JS_URL (default=None)
 
-The path to any custom js that needs to be added to Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
+The path to a custom script for Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
 
 ## Settings Usage
 
