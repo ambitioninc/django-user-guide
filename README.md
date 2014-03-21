@@ -20,9 +20,9 @@ To install Django User Guide:
 pip install git+https://github.com/ambitioninc/django-user-guide.git@0.1
 ```
 
-settings.py
-
 Add Django User Guide to your `INSTALLED_APPS` to get started:
+
+settings.py
 
 ```python
 
