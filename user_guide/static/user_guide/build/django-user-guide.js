@@ -194,6 +194,18 @@
         },
 
         /**
+         * @method isFinished
+         * Describes if a particular guide has been finished. Always returns true by default.
+         * Override this method for custom finish criteria logic.
+         * Return true to allow the {@link finishedItem} method to proceed.
+         * @param {HTMLDivElement} item - The item to check.
+         * @returns {Boolean}
+         */
+        isFinished: function() {
+            return true;
+        },
+
+        /**
          * @method finishItem
          * Marks an item finished and calls {@link put}.
          * @param {HTMLDivElement} item - The item to mark finished.
@@ -201,7 +213,7 @@
         finishItem: function(item) {
             var guideId = item ? item.getAttribute('data-guide') : null;
 
-            if (guideId && !this.finishedItems[guideId]) {
+            if (guideId && !this.finishedItems[guideId] && this.isFinished(item)) {
                 this.finishedItems[guideId] = true;
                 this.put('/user-guide/api/guideinfo/' + guideId + '/', {
                     'is_finished': true

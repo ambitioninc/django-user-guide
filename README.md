@@ -5,9 +5,17 @@
 Django User Guide is a `django>=1.6` app that shows configurable, self-contained HTML guides to users. Showing a guide to all of your users is as easy as
 creating a `Guide` object and linking them to your users. Use the convenient `{% user_guide %}` template tag where you want guides to appear and Django User Guide does the rest. When a user visits a page containing the template tag, they are greeted with relevant guides. Django User Guide decides what guide(s) a user needs to see and displays them in a modal window with controls for cycling through those guides. Django User Guide tracks plenty of meta-data: creation times, guide importance, if the guide has been finished by specific users, finished times, etc.
 
-## Guide
+## Table of Contents
+1. [Guide](#guide)
+1. [GuideInfo](#guide-info)
+1. [Settings](#settings)
+1. [Finishing Criteria](#finishing-criteria)
+1. [Putting It All Together](#putting-it-all-together)
 
-First you will need to create a `Guide` object. A `Guide` object consists of:
+
+## <a name="guide">Guide</a>
+
+First you will need to one or more `Guide` objects. A `Guide` object consists of:
 
 #### guide_name (required, max_length=64, unique)
 
@@ -35,7 +43,7 @@ The rendering type for the `Guide`. Only a modal window is currently supported. 
 Stores the current datetime when a `Guide` is created.
 
 
-## Guide usage
+## Guide Usage
 
 ```python
 from user_guide.models import Guide
@@ -48,7 +56,7 @@ Guide.objects.create(
 )
 ```
 
-## GuideInfo
+## <a name="guide-info">GuideInfo</a>
 
 The next step is creating `GuideInfo` objects. These are used to connect a `Guide` to a `User`. A `GuideInfo` object consists of:
 
@@ -68,7 +76,7 @@ Marked true when the `User` has completed some [finishing criteria](#finishing-c
 
 When the [finishing criteria](#finishing-criteria) is met, the value of `datetime.utcnow()` is stored.
 
-## GuideInfo usage
+## GuideInfo Usage
 
 ```python
 from django.contrib.auth.models import User
@@ -82,7 +90,61 @@ user = User.objects.get(id=1)
 GuideInfo.objects.create(guide=guide, user=user)
 ```
 
-## Putting It All Together
+## <a name="settings">Settings</a>
+
+Django User Guide has several configurations that can finely tune your user guide experience.
+
+#### USER_GUIDE_SHOW_MAX (default=10)
+
+The maximum number of guides to show for a single page load.
+
+#### USER_GUIDE_CSS_URL (default=None)
+
+The path to any custom style sheets for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
+
+#### USER_GUIDE_JS_URL (default=None)
+
+The path to any custom js that needs to be added to Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
+
+## Settings Usage
+
+settings.py
+
+```python
+# Django User Guide settings
+USER_GUIDE_SHOW_MAX = 5
+USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
+USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
+```
+
+## <name='finishing-criteria'>Finishing criteria</a>
+
+Finishing criteria are rules to marking a guide as finished. By default, they only need to press the 'next' or 'done' button on a guide. This behavior can be overridden by creating a custom script and adding it to the USER_GUIDE_JS_URL setting. The custom script only needs to override the `window.DjangoUserGuide.isFinished` method.
+
+custom-script.js
+
+```js
+    /**
+     * @override isFinished
+     * Only allows guides to be marked finished on Mondays.
+     * @param {HTMLDivElement} item - The item to check.
+     * @returns {Boolean}
+     */
+    window.DjangoUserGuide.isFinished = function(item) {
+        if ((new Date()).getDay() === 1) {
+            return true;
+        }
+        return false;
+    };
+```
+
+settings.py
+
+```python
+USER_GUIDE_JS_URL = 'path/to/custom-script.js'
+```
+
+## <a name="putting-it-all-together">Putting It All Together</a>
 
 Assuming you have created some guides and guide info objects, this is how you would
 show your users their relevant guides.
@@ -115,34 +177,3 @@ templates/cool_project/cool_template.html
     </body>
 </html>
 ```
-
-## Settings
-
-Django User Guide has several configurations that can finely tune your user guide experience.
-
-#### USER_GUIDE_SHOW_MAX (default=10)
-
-The maximum number of guides to show for a single page load.
-
-#### USER_GUIDE_CSS_URL (default=None)
-
-The path to any custom style sheets for Django User Guides. Added as a `link` tag immediately after the [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) source. If omitted, no extra style sheets are included See [django-user-guide.css](user_guide/static/user_guide/build/django-user-guide.css) for class names to override.
-
-#### USER_GUIDE_JS_URL (default=None)
-
-The path to any custom js that needs to be added to Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
-
-## Settings usage
-
-settings.py
-
-```python
-# Django User Guide settings
-USER_GUIDE_SHOW_MAX = 5
-USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
-USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
-```
-
-## <a name='finishing-criteria'>Finishing criteria</a>
-
-Add some stuff about finishing criteria here.
