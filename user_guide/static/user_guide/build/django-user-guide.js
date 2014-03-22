@@ -247,7 +247,6 @@
          */
         show: function show() {
             if (this.getItems().length) { //we have some guides
-                this.onWindowResize(); //set the initial guide size
                 this.addListeners();
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
@@ -260,20 +259,10 @@
          * Adds listeners to the various guide components.
          */
         addListeners: function addListeners() {
-            window.onresize = this.onWindowResize.bind(this);
             this.getBackBtn().onclick = this.onBackClick.bind(this);
             this.getNextBtn().onclick = this.onNextClick.bind(this);
             this.getDoneBtn().onclick = this.onDoneClick.bind(this);
             this.getCloseDiv().onclick = this.onCloseClick.bind(this);
-        },
-
-        /**
-         * @method onWindowResize
-         * Sets
-         */
-        onWindowResize: function() {
-            this.getGuide().style.minHeight = window.innerHeight;
-            this.getGuide().style.minWidth = window.innerWidth;
         },
 
         /**
