@@ -3,6 +3,8 @@
     position: absolute;
     top: 0;
     left: 0;
+    height: 9999px;
+    width: 9999px;
 }
 
 .django-user-guide-mask {

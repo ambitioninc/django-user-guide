@@ -272,8 +272,8 @@
          * Sets
          */
         onWindowResize: function() {
-            this.getGuide().style.minHeight = window.innerHeight;
-            this.getGuide().style.minWidth = window.innerWidth;
+            this.getGuide().style.minHeight = window.innerHeight + 'px';
+            this.getGuide().style.minWidth = window.innerWidth + 'px';
         },
 
         /**
