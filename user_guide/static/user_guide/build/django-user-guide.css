@@ -1,10 +1,15 @@
 .django-user-guide {
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99999;
 }
 
 .django-user-guide-mask {
     position: absolute;
-    z-index: 999;
     top: 0;
     left: 0;
     height: 100%;
@@ -23,10 +28,12 @@
     border-radius: 5px;
     background-color: #fff;
     position: absolute;
-    margin: auto;
     height: 350px;
     width: 350px;
-    top:0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    top: 100px;
+    left: 0;
+    right: 0;
     padding: 20px 20px 32px 20px;
 }
 

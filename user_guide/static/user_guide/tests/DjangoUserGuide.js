@@ -21,8 +21,19 @@ describe('DjangoUserGuide', function() {
         return getComputedStyle(el).getPropertyValue(prop);
     }
 
+    function getFakeEvt(className) {
+        return {
+            target: {
+                className: className || ''
+            },
+            stopPropagation: function() {}
+        };
+    }
+
     it('should handle many items', function() {
-        var dug = new window.DjangoUserGuide(),
+        var dug = new window.DjangoUserGuide({
+                csrfCookieName: 'csrf-token-custom'
+            }),
             items = null,
             btns = null,
             cont = null,
@@ -45,6 +56,9 @@ describe('DjangoUserGuide', function() {
                 '    </div>',
                 '</div>'
             ].join('\n'));
+
+        //set a custom cookie
+        document.cookie = 'csrf-token-custom=123456789';
 
         //add the guide to the dom
         appendDom(guide);
@@ -95,7 +109,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should NOT show the done button
 
         //close the window
-        dug.onDoneClick();
+        dug.onCloseClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
 
         removeDom(guide); //clean up the dom
@@ -138,8 +152,8 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
         expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the next button
 
-        //close the window
-        dug.onCloseClick();
+        //click done on the window
+        dug.onDoneClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
 
         removeDom(guide); //clean up the dom
@@ -181,19 +195,38 @@ describe('DjangoUserGuide', function() {
         expect(dug.getNextBtn()).not.toBeUndefined();
         expect(dug.getDoneBtn()).not.toBeUndefined();
         expect(dug.getCloseDiv()).not.toBeUndefined();
+        expect(dug.getGuideMask()).not.toBeUndefined();
         expect(getRenderedStyle(dug.getBackBtn(), 'display')).toBe('none');
         expect(getRenderedStyle(dug.getDoneBtn(), 'display')).toBe('none');
         expect(getRenderedStyle(dug.getNextBtn(), 'display')).toBe('none');
+        expect(getRenderedStyle(dug.getGuideMask(), 'display')).toBe('block'); //hidden by parent
         expect(getRenderedStyle(dug.getCloseDiv(), 'display')).toBe('block'); //hidden by parent
 
-        //manaing to click the buttons should not cause trouble
+        //none of the events should cause trouble
         dug.onBackClick();
         dug.onNextClick();
         dug.onDoneClick();
         dug.onCloseClick();
+        dug.onMaskClick(getFakeEvt());
+        dug.onMaskClick(getFakeEvt('django-user-guide-mask'));
 
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
 
         removeDom(guide); //clean up the dom
+    });
+
+    it('should get a custom csrf token', function() {
+        var dug = new window.DjangoUserGuide({
+            csrfCookieName: 'csrf-token-custom'
+        });
+
+        //set a custom cookie for extraction
+        document.cookie = 'csrf-token-custom=123456789';
+        expect(dug.getCsrfToken()).toBe('123456789');
+
+        //look for a missing cookie
+        dug.csrfCookieName = 'missing-csrf-token';
+        expect(dug.getCsrfToken()).toBe('');
+
     });
 });

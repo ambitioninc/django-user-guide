@@ -28,6 +28,8 @@
     {% endif %}
 
     <script>
-        (new DjangoUserGuide({% csrf_token %})).run();
+        (new window.DjangoUserGuide({
+            csrfCookieName: '{{csrf_cookie_name}}'
+        })).run();
     </script>
 </div>

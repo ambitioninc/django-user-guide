@@ -3,10 +3,13 @@
 
     /**
      * @constructor
-     * Sets the passed csrf token from the template.
+     * Sets the passed csrf token name from the template.
      */
-    window.DjangoUserGuide = function(csrfToken) {
-        this.csrfToken = csrfToken;
+    window.DjangoUserGuide = function DjangoUserGuide(config) {
+        config = config || {};
+        this.csrfCookieName = config.csrfCookieName;
+        this.finishedItems = {};
+        this.itemIndex = 0;
     };
 
     window.DjangoUserGuide.prototype = {
@@ -21,6 +24,18 @@
                 this.guide = document.querySelector('.django-user-guide');
             }
             return this.guide;
+        },
+
+        /**
+         * @method getGuideMask
+         * Gets the guide mask.
+         * @returns {HTMLDivElement}
+         */
+        getGuideMask: function getGuideMask() {
+            if (!this.guideMask) {
+                this.guideMask = document.querySelector('.django-user-guide-mask');
+            }
+            return this.guideMask;
         },
 
         /**
@@ -84,16 +99,17 @@
         },
 
         /**
-         * @type {Number}
-         * The currently visible guide.
+         * @method getCsrfToken
+         * Gets the csrf token as set by the cookie.
+         * @returns {String}
          */
-        itemIndex: 0,
-
-        /**
-         * @type {Object}
-         * The items that have been finished.
-         */
-        finishedItems: {},
+        getCsrfToken: function getCsrfToken() {
+            var csrf;
+            if (this.csrfCookieName) {
+                csrf = document.cookie.match(new RegExp(this.csrfCookieName + '=([^;]*)'));
+            }
+            return csrf ? csrf[1] : '';
+        },
 
         /**
          * @type {Object}
@@ -191,11 +207,18 @@
          * @param {String} url - The url to PUT.
          * @param {Object} data - The data to PUT.
          */
-        put: function(url, data) {
-            var req = new XMLHttpRequest();
+        put: function put(url, data) {
+            var req = new XMLHttpRequest(),
+                csrfToken = this.getCsrfToken();
 
+            //open the request
             req.open('PUT', url, true);
-            req.setRequestHeader('X-CSRFToken', this.csrfToken);
+
+            if (csrfToken) { //see if the csrf token should be set
+                req.setRequestHeader('X-CSRFToken', csrfToken);
+            }
+
+            //send the data
             req.setRequestHeader('Content-Type', 'application/json');
             req.send(JSON.stringify(data));
         },
@@ -208,7 +231,7 @@
          * @param {HTMLDivElement} item - The item to check.
          * @returns {Boolean}
          */
-        isFinished: function() {
+        isFinished: function isFinished() {
             return true;
         },
 
@@ -217,7 +240,7 @@
          * Marks an item finished and calls {@link put}.
          * @param {HTMLDivElement} item - The item to mark finished.
          */
-        finishItem: function(item) {
+        finishItem: function finishItem(item) {
             var guideId = item ? item.getAttribute('data-guide') : null;
 
             if (guideId && !this.finishedItems[guideId] && this.isFinished(item)) {
@@ -236,6 +259,7 @@
          */
         show: function show() {
             if (this.getItems().length) { //we have some guides
+                this.onWindowResize(); //set the initial minimum guide size
                 this.addListeners();
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
@@ -248,10 +272,32 @@
          * Adds listeners to the various guide components.
          */
         addListeners: function addListeners() {
+            window.onresize = this.onWindowResize.bind(this);
             this.getBackBtn().onclick = this.onBackClick.bind(this);
             this.getNextBtn().onclick = this.onNextClick.bind(this);
             this.getDoneBtn().onclick = this.onDoneClick.bind(this);
             this.getCloseDiv().onclick = this.onCloseClick.bind(this);
+            this.getGuideMask().onclick = this.onMaskClick.bind(this);
+        },
+
+        /**
+         * @method onWindowResize
+         * Sets the minimum height of the entire guide div.
+         */
+        onWindowResize: function onWindowResize() {
+            this.getGuide().style.minHeight = document.body.scrollHeight + 'px';
+            this.getGuide().style.minWidth = document.body.scrollWidth + 'px';
+        },
+
+        /**
+         * @method onCloseClick
+         * Handler for clicking on the guide mask.
+         */
+        onMaskClick: function onMaskClick(evt) {
+            if (evt.target.className === 'django-user-guide-mask') {
+                this.hideEl(this.getGuide());
+            }
+            evt.stopPropagation();
         },
 
         /**
