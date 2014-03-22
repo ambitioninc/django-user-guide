@@ -21,6 +21,15 @@ describe('DjangoUserGuide', function() {
         return getComputedStyle(el).getPropertyValue(prop);
     }
 
+    function getFakeEvt(className) {
+        return {
+            target: {
+                className: className || ''
+            },
+            stopPropagation: function() {}
+        };
+    }
+
     it('should handle many items', function() {
         var dug = new window.DjangoUserGuide({
                 csrfCookieName: 'csrf-token-custom'
@@ -186,16 +195,20 @@ describe('DjangoUserGuide', function() {
         expect(dug.getNextBtn()).not.toBeUndefined();
         expect(dug.getDoneBtn()).not.toBeUndefined();
         expect(dug.getCloseDiv()).not.toBeUndefined();
+        expect(dug.getGuideMask()).not.toBeUndefined();
         expect(getRenderedStyle(dug.getBackBtn(), 'display')).toBe('none');
         expect(getRenderedStyle(dug.getDoneBtn(), 'display')).toBe('none');
         expect(getRenderedStyle(dug.getNextBtn(), 'display')).toBe('none');
+        expect(getRenderedStyle(dug.getGuideMask(), 'display')).toBe('block'); //hidden by parent
         expect(getRenderedStyle(dug.getCloseDiv(), 'display')).toBe('block'); //hidden by parent
 
-        //manaing to click the buttons should not cause trouble
+        //none of the events should cause trouble
         dug.onBackClick();
         dug.onNextClick();
         dug.onDoneClick();
         dug.onCloseClick();
+        dug.onMaskClick(getFakeEvt());
+        dug.onMaskClick(getFakeEvt('django-user-guide-mask'));
 
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
 

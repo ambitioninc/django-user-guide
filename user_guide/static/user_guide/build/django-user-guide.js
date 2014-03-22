@@ -27,6 +27,18 @@
         },
 
         /**
+         * @method getGuideMask
+         * Gets the entire user guide div.
+         * @returns {HTMLDivElement}
+         */
+        getGuideMask: function getGuideMask() {
+            if (!this.guideMask) {
+                this.guideMask = document.querySelector('.django-user-guide-mask');
+            }
+            return this.guideMask;
+        },
+
+        /**
          * @method getItems
          * Gets the guide's html guide items.
          * @returns {HTMLDivElement[]}
@@ -247,6 +259,7 @@
          */
         show: function show() {
             if (this.getItems().length) { //we have some guides
+                this.onWindowResize(); //set the initial minimum guide size
                 this.addListeners();
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
@@ -259,10 +272,32 @@
          * Adds listeners to the various guide components.
          */
         addListeners: function addListeners() {
+            window.onresize = this.onWindowResize.bind(this);
             this.getBackBtn().onclick = this.onBackClick.bind(this);
             this.getNextBtn().onclick = this.onNextClick.bind(this);
             this.getDoneBtn().onclick = this.onDoneClick.bind(this);
             this.getCloseDiv().onclick = this.onCloseClick.bind(this);
+            this.getGuideMask().onclick = this.onMaskClick.bind(this);
+        },
+
+        /**
+         * @method onWindowResize
+         * Sets the minimum height of the entire guide div.
+         */
+        onWindowResize: function onWindowResize() {
+            this.getGuide().style.minHeight = document.body.scrollHeight + 'px';
+            this.getGuide().style.minWidth = document.body.scrollWidth + 'px';
+        },
+
+        /**
+         * @method onCloseClick
+         * Handler for clicking on the guide mask.
+         */
+        onMaskClick: function onMaskClick(evt) {
+            if (evt.target.className === 'django-user-guide-mask') {
+                this.hideEl(this.getGuide());
+            }
+            evt.stopPropagation();
         },
 
         /**
