@@ -13,6 +13,9 @@ register = template.Library()
 # The maximum number of guides to show per page
 USER_GUIDE_SHOW_MAX = getattr(settings, 'USER_GUIDE_SHOW_MAX', 10)
 
+# The name of the csrf token cookie
+CSRF_COOKIE_NAME = getattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken')
+
 # The url to any custom CSS
 USER_GUIDE_CSS_URL = getattr(
     settings,
@@ -67,7 +70,7 @@ def user_guide(context, *args, **kwargs):
         # Return the rendered template with the guide html
         return loader.render_to_string('user_guide/window.html', {
             'html': html,
-            'csrf_cookie_name': hasattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken'),
+            'csrf_cookie_name': CSRF_COOKIE_NAME,
             'css_href': '{0}user_guide/build/django-user-guide.css'.format(settings.STATIC_URL),
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
