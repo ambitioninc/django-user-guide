@@ -67,6 +67,7 @@ def user_guide(context, *args, **kwargs):
         # Return the rendered template with the guide html
         return loader.render_to_string('user_guide/window.html', {
             'html': html,
+            'csrf_cookie_name': hasattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken'),
             'css_href': '{0}user_guide/build/django-user-guide.css'.format(settings.STATIC_URL),
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
