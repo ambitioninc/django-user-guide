@@ -5,7 +5,7 @@
      * @constructor
      * Sets the passed csrf token name from the template.
      */
-    window.DjangoUserGuide = function(config) {
+    window.DjangoUserGuide = function DjangoUserGuide(config) {
         config = config || {};
         this.csrfCookieName = config.csrfCookieName;
         this.finishedItems = {};
@@ -91,7 +91,7 @@
          * Gets the csrf token as set by the cookie.
          * @returns {String}
          */
-        getCsrfToken: function() {
+        getCsrfToken: function getCsrfToken() {
             var csrf;
             if (this.csrfCookieName) {
                 csrf = document.cookie.match(new RegExp(this.csrfCookieName + '=([^;]*)'));
@@ -195,7 +195,7 @@
          * @param {String} url - The url to PUT.
          * @param {Object} data - The data to PUT.
          */
-        put: function(url, data) {
+        put: function put(url, data) {
             var req = new XMLHttpRequest(),
                 csrfToken = this.getCsrfToken();
 
