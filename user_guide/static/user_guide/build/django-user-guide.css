@@ -1,5 +1,8 @@
 .django-user-guide {
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .django-user-guide-mask {
@@ -25,6 +28,8 @@
     position: absolute;
     height: 350px;
     width: 350px;
+    margin: auto;
+    top: 100px;
     left: 0;
     right: 0;
     padding: 20px 20px 32px 20px;
