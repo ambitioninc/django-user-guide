@@ -28,7 +28,7 @@
 
         /**
          * @method getGuideMask
-         * Gets the entire user guide div.
+         * Gets the guide mask.
          * @returns {HTMLDivElement}
          */
         getGuideMask: function getGuideMask() {
