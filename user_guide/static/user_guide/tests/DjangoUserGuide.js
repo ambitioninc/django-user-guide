@@ -22,7 +22,9 @@ describe('DjangoUserGuide', function() {
     }
 
     it('should handle many items', function() {
-        var dug = new window.DjangoUserGuide(),
+        var dug = new window.DjangoUserGuide({
+                csrfCookieName: 'csrf-token-custom'
+            }),
             items = null,
             btns = null,
             cont = null,
@@ -45,6 +47,9 @@ describe('DjangoUserGuide', function() {
                 '    </div>',
                 '</div>'
             ].join('\n'));
+
+        //set a custom cookie
+        document.cookie = 'csrf-token-custom=123456789';
 
         //add the guide to the dom
         appendDom(guide);
@@ -95,7 +100,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should NOT show the done button
 
         //close the window
-        dug.onDoneClick();
+        dug.onCloseClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
 
         removeDom(guide); //clean up the dom
@@ -138,8 +143,8 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
         expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the next button
 
-        //close the window
-        dug.onCloseClick();
+        //click done on the window
+        dug.onDoneClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
 
         removeDom(guide); //clean up the dom
@@ -195,5 +200,20 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
 
         removeDom(guide); //clean up the dom
+    });
+
+    it('should get a custom csrf token', function() {
+        var dug = new window.DjangoUserGuide({
+            csrfCookieName: 'csrf-token-custom'
+        });
+
+        //set a custom cookie for extraction
+        document.cookie = 'csrf-token-custom=123456789';
+        expect(dug.getCsrfToken()).toBe('123456789');
+
+        //look for a missing cookie
+        dug.csrfCookieName = 'missing-csrf-token';
+        expect(dug.getCsrfToken()).toBe('');
+
     });
 });

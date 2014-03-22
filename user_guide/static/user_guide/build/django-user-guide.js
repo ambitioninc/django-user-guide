@@ -3,10 +3,13 @@
 
     /**
      * @constructor
-     * Sets the passed csrf token from the template.
+     * Sets the passed csrf token name from the template.
      */
-    window.DjangoUserGuide = function(csrfToken) {
-        this.csrfToken = csrfToken;
+    window.DjangoUserGuide = function DjangoUserGuide(config) {
+        config = config || {};
+        this.csrfCookieName = config.csrfCookieName;
+        this.finishedItems = {};
+        this.itemIndex = 0;
     };
 
     window.DjangoUserGuide.prototype = {
@@ -84,16 +87,17 @@
         },
 
         /**
-         * @type {Number}
-         * The currently visible guide.
+         * @method getCsrfToken
+         * Gets the csrf token as set by the cookie.
+         * @returns {String}
          */
-        itemIndex: 0,
-
-        /**
-         * @type {Object}
-         * The items that have been finished.
-         */
-        finishedItems: {},
+        getCsrfToken: function getCsrfToken() {
+            var csrf;
+            if (this.csrfCookieName) {
+                csrf = document.cookie.match(new RegExp(this.csrfCookieName + '=([^;]*)'));
+            }
+            return csrf ? csrf[1] : '';
+        },
 
         /**
          * @type {Object}
@@ -191,11 +195,18 @@
          * @param {String} url - The url to PUT.
          * @param {Object} data - The data to PUT.
          */
-        put: function(url, data) {
-            var req = new XMLHttpRequest();
+        put: function put(url, data) {
+            var req = new XMLHttpRequest(),
+                csrfToken = this.getCsrfToken();
 
+            //open the request
             req.open('PUT', url, true);
-            req.setRequestHeader('X-CSRFToken', this.csrfToken);
+
+            if (csrfToken) { //see if the csrf token should be set
+                req.setRequestHeader('X-CSRFToken', csrfToken);
+            }
+
+            //send the data
             req.setRequestHeader('Content-Type', 'application/json');
             req.send(JSON.stringify(data));
         },
@@ -208,7 +219,7 @@
          * @param {HTMLDivElement} item - The item to check.
          * @returns {Boolean}
          */
-        isFinished: function() {
+        isFinished: function isFinished() {
             return true;
         },
 
@@ -217,7 +228,7 @@
          * Marks an item finished and calls {@link put}.
          * @param {HTMLDivElement} item - The item to mark finished.
          */
-        finishItem: function(item) {
+        finishItem: function finishItem(item) {
             var guideId = item ? item.getAttribute('data-guide') : null;
 
             if (guideId && !this.finishedItems[guideId] && this.isFinished(item)) {
