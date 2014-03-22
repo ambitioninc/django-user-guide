@@ -3,13 +3,13 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 9999px;
-    width: 9999px;
+    height: 99999px;
+    width: 99999px;
+    z-index: 99999;
 }
 
 .django-user-guide-mask {
     position: absolute;
-    z-index: 999;
     top: 0;
     left: 0;
     height: 100%;
