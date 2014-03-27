@@ -73,7 +73,7 @@ This is a semantic, unique identifier for a `Guide`. Allows for easy identificat
 #### html
 
 The markup for the `Guide`. Use this field to communicate with your users in a meaningful way.
-Note that the data in this field is output with `{% html|safe %}`, so it would be a bad idea to put untrusted data in it. The html field automatically replaces `{static}` with `settings.STATIC_URL` for convenience.
+Note that the data in this field is output with `{% html|safe %}`, so it would be a bad idea to put untrusted data in it. The html field automatically replaces `{static}` within the html with the value of `settings.STATIC_URL` for convenience.
 
 #### guide_tag (default='all')
 
