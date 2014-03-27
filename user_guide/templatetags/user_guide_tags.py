@@ -1,6 +1,8 @@
 """
 Template tag for displaying user guides.
 """
+import re
+
 from django import template
 from django.conf import settings
 from django.template import loader
@@ -69,7 +71,7 @@ def user_guide(context, *args, **kwargs):
 
         # Return the rendered template with the guide html
         return loader.render_to_string('user_guide/window.html', {
-            'html': html,
+            'html': re.sub(r'\{\s*static\s*\}', settings.STATIC_URL, html),
             'csrf_cookie_name': CSRF_COOKIE_NAME,
             'css_href': '{0}user_guide/build/django-user-guide.css'.format(settings.STATIC_URL),
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),

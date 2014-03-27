@@ -21,7 +21,7 @@ class TemplateTagTest(TestCase):
 
         self.guides = [
             Guide.objects.create(
-                html='<div>Hello test {0}!</div>'.format(i),
+                html='<div>Hello test {0}! <img src="{{static}}images/cool-image.png"></div>'.format(i),
                 guide_name='Test Guide {0}'.format(i),
                 guide_type='Window',
                 guide_tag='tag{0}'.format(i),
@@ -69,6 +69,7 @@ class TemplateTagTest(TestCase):
         self.assertTrue('django-user-guide.js' in rendered)  # Should have django-user-guide script
         self.assertTrue('custom-style.css' in rendered)  # Should have custom style sheet
         self.assertTrue('custom-script.js' in rendered)  # Should have custom script
+        self.assertTrue('<img src="/static/images/cool-image.png">' in rendered)  # Should have expanded {static}
 
     def test_user_guide_tags_guide_name_filter(self):
         t = Template('{% load user_guide_tags %}{% user_guide guide_name=guide_name %}')
@@ -85,7 +86,7 @@ class TemplateTagTest(TestCase):
         # render the template
         rendered = t.render(c)
 
-        self.assertTrue('<div>Hello test 1!</div>' in rendered)
+        self.assertTrue('<div>Hello test 1!' in rendered)
 
     def test_user_guide_tags_guide_tag_filter(self):
         t = Template('{% load user_guide_tags %}{% user_guide guide_tags=guide_tags %}')
@@ -103,5 +104,5 @@ class TemplateTagTest(TestCase):
         # render the template
         rendered = t.render(c)
 
-        self.assertTrue('<div>Hello test 0!</div>' in rendered)
-        self.assertTrue('<div>Hello test 1!</div>' in rendered)
+        self.assertTrue('<div>Hello test 0!' in rendered)
+        self.assertTrue('<div>Hello test 1!' in rendered)
