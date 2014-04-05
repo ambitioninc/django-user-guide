@@ -16,4 +16,5 @@ class AdminTest(TestCase):
 
     def test_user_guide_info_admin(self):
         guide_info_admin = GuideInfoAdmin(GuideInfo, self.site)
-        self.assertEqual(guide_info_admin.list_display, ('user', 'guide', 'is_finished', 'finished_time'))
+        self.assertEqual(guide_info_admin.list_display, ('user', 'guide_name', 'is_finished', 'finished_time'))
+        self.assertEqual(guide_info_admin.guide_name, ('guide_name',))
