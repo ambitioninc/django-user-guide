@@ -20,4 +20,3 @@ class AdminTest(TestCase):
         guide_info_obj = G(GuideInfo, guide=F(guide_name='test_name'))
         self.assertEqual(guide_info_admin.list_display, ('user', 'guide_name', 'is_finished', 'finished_time'))
         self.assertEqual(guide_info_admin.guide_name(guide_info_obj), 'test_name')
-
