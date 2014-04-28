@@ -8,7 +8,7 @@
         "beforeOpeningRoundBrace": true
     },
     "requireMultipleVarDecl": true,
-    "disallowLeftStickedOperators": ["?", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+    "disallowLeftStickedOperators": ["?", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
     "disallowRightStickedOperators": ["?", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
     "requireRightStickedOperators": ["!"],
     "requireLeftStickedOperators": [","],

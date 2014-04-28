@@ -19,6 +19,7 @@
         "beforeEach": true,
         "afterEach": true,
         "expect": true,
+        "spyOn": true,
         "xdescribe": true,
         "xit": true,
         "xexpect": true
