@@ -99,6 +99,18 @@
         },
 
         /**
+         * @method getCounterSpan
+         * Gets the guide's counter span.
+         * @returns {HTMLSpanElement}
+         */
+        getCounterSpan: function getCounterSpan() {
+            if (!this.counterDiv) {
+                this.counterDiv = document.querySelector('.django-user-guide-counter span');
+            }
+            return this.counterDiv;
+        },
+
+        /**
          * @method getCsrfToken
          * Gets the csrf token as set by the cookie.
          * @returns {String}
@@ -178,7 +190,7 @@
                 next = this.getItems()[this.itemIndex + 1];
 
             if (curr && next) {
-                this.itemIndex++;
+                this.updateItemIndex(1);
                 this.hideEl(curr);
                 this.showEl(next);
                 this.showHideBtns();
@@ -194,11 +206,22 @@
                 prev = this.getItems()[this.itemIndex - 1];
 
             if (curr && prev) {
-                this.itemIndex--;
+                this.updateItemIndex(-1);
                 this.hideEl(curr);
                 this.showEl(prev);
                 this.showHideBtns();
             }
+        },
+
+        /**
+         * @method updateItemIndex
+         * Updates the item index and refreshes the tool tip numbers.
+         * @param {Number} num - The number to incread the {@link itemIndex} by.
+         */
+        updateItemIndex: function updateItemIndex(num) {
+            this.itemIndex += num;
+
+            this.getCounterSpan().innerHTML = 'Tip ' + (this.itemIndex + 1) + ' of ' + (this.getItems().length);
         },
 
         /**
@@ -261,6 +284,7 @@
             if (this.getItems().length) { //we have some guides
                 this.onWindowResize(); //set the initial minimum guide size
                 this.addListeners();
+                this.updateItemIndex(0);
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
                 this.showHideBtns();

@@ -10,9 +10,12 @@
             <div class="django-user-guide-close-div">x</div>
 
             <div class="django-user-guide-html-wrapper">
-                {{html|safe}}
+                {{ html|safe }}
             </div>
 
+            <div class="django-user-guide-counter">
+                <span>Tip 1 of 1</span>
+            </div>
             <div class="django-user-guide-window-nav">
                 <button class="django-user-guide-btn django-user-guide-back-btn">&larr; Back</button>
                 <button class="django-user-guide-btn django-user-guide-next-btn">Next &rarr;</button>
@@ -29,7 +32,7 @@
 
     <script>
         (new window.DjangoUserGuide({
-            csrfCookieName: '{{csrf_cookie_name}}'
+            csrfCookieName: '{{ csrf_cookie_name }}'
         })).run();
     </script>
 </div>
