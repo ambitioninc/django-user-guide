@@ -105,7 +105,7 @@
          */
         getCounterSpan: function getCounterSpan() {
             if (!this.counterDiv) {
-                this.counterDiv = document.querySelector('.django-user-guide-counter').querySelector('span');
+                this.counterDiv = document.querySelector('.django-user-guide-counter span');
             }
             return this.counterDiv;
         },
@@ -284,6 +284,7 @@
             if (this.getItems().length) { //we have some guides
                 this.onWindowResize(); //set the initial minimum guide size
                 this.addListeners();
+                this.updateItemIndex(0);
                 this.showEl(this.getGuide());
                 this.showEl(this.getItems()[0]);
                 this.showHideBtns();

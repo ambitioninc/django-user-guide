@@ -67,6 +67,7 @@ describe('DjangoUserGuide', function() {
             items = null,
             btns = null,
             cont = null,
+            counter = null,
             guides = [
                 '<div data-guide="1" class="django-user-guide-item"><p>Hello guide 1</p></div>',
                 '<div data-guide="2" class="django-user-guide-item"><p>Hello guide 2</p></div>',
@@ -89,6 +90,7 @@ describe('DjangoUserGuide', function() {
         items = queryAllDom('.django-user-guide-item');
         btns = queryAllDom('button');
         cont = queryAllDom('.django-user-guide');
+        counter = queryAllDom('.django-user-guide-counter span')[0];
 
         expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
         expect(getRenderedStyle(items[1], 'display')).toBe('none'); //should NOT show the second item
@@ -96,6 +98,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[0], 'display')).toBe('none'); //should NOT show the back button
         expect(getRenderedStyle(btns[1], 'display')).toBe('inline-block'); //should show the next button
         expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should NOT show the done button
+        expect(counter.innerHTML).toBe('Tip 1 of 3');
 
         //click the next button
         dug.onNextClick();
@@ -109,6 +112,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[0], 'display')).toBe('inline-block'); //should show the back button
         expect(getRenderedStyle(btns[1], 'display')).toBe('inline-block'); //should show the next button
         expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should NOT show the done button
+        expect(counter.innerHTML).toBe('Tip 2 of 3');
 
         //click the next button
         dug.onNextClick();
@@ -122,6 +126,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[0], 'display')).toBe('inline-block'); //should show the back button
         expect(getRenderedStyle(btns[1], 'display')).toBe('none'); //should NOT show the next button
         expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the done button
+        expect(counter.innerHTML).toBe('Tip 3 of 3');
 
         //click the back button
         dug.onBackClick();
@@ -132,6 +137,7 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(btns[0], 'display')).toBe('inline-block'); //should show the back button
         expect(getRenderedStyle(btns[1], 'display')).toBe('inline-block'); //should show the next button
         expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should NOT show the done button
+        expect(counter.innerHTML).toBe('Tip 2 of 3');
 
         //close the window
         dug.onCloseClick();
@@ -143,6 +149,7 @@ describe('DjangoUserGuide', function() {
             items = null,
             btns = null,
             cont = null,
+            counter = null,
             guides = [
                 '<div data-guide="23" class="django-user-guide-item"><p>Hello guide 23</p></div>',
             ].join('\n');
@@ -160,9 +167,11 @@ describe('DjangoUserGuide', function() {
         items = queryAllDom('.django-user-guide-item');
         btns = queryAllDom('button');
         cont = queryAllDom('.django-user-guide');
+        counter = queryAllDom('.django-user-guide-counter span')[0];
 
         expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
         expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the next button
+        expect(counter.innerHTML).toBe('Tip 1 of 1');
 
         //click done on the window
         dug.onDoneClick();
