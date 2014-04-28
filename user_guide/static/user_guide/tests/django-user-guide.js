@@ -30,6 +30,34 @@ describe('DjangoUserGuide', function() {
         };
     }
 
+    var guideDom = createDom([
+        '<div class="django-user-guide">',
+        '   <div class="django-user-guide-mask">',
+        '      <div class="django-user-guide-window">',
+        '           <div class="django-user-guide-close-div">x</div>',
+        '           <div class="django-user-guide-html-wrapper">',
+        '           </div>',
+        '           <div class="django-user-guide-counter">',
+        '               <span>Tip 1 of 1</span>',
+        '           </div>',
+        '           <div class="django-user-guide-window-nav">',
+        '                <button class="django-user-guide-btn django-user-guide-back-btn">&lt; Back</button>',
+        '                <button class="django-user-guide-btn django-user-guide-next-btn">Next &gt;</button>',
+        '                <button class="django-user-guide-btn django-user-guide-done-btn">Done</button>',
+        '            </div>',
+        '        </div>',
+        '    </div>',
+        '</div>'
+    ].join('\n'));
+
+    beforeEach(function() {
+        appendDom(guideDom);
+    });
+
+    afterEach(function() {
+        removeDom(guideDom);
+    });
+
     it('should handle many items', function() {
         var dug = new window.DjangoUserGuide({
                 csrfCookieName: 'csrf-token-custom'
@@ -37,31 +65,17 @@ describe('DjangoUserGuide', function() {
             items = null,
             btns = null,
             cont = null,
-            guide = createDom([
-                '<div class="django-user-guide">',
-                '   <div class="django-user-guide-mask">',
-                '      <div class="django-user-guide-window">',
-                '           <div class="django-user-guide-close-div">x</div>',
-                '           <div class="django-user-guide-html-wrapper">',
-                '               <div data-guide="1" class="django-user-guide-item"><h1>MEGA GUIDE!!!</h1></div>',
-                '               <div data-guide="2" class="django-user-guide-item"><p>Hello guide 2</p></div>',
-                '               <div data-guide="3" class="django-user-guide-item"><p>Hello guide 1</p></div>',
-                '           </div>',
-                '           <div class="django-user-guide-window-nav">',
-                '                <button class="django-user-guide-btn django-user-guide-back-btn">&lt; Back</button>',
-                '                <button class="django-user-guide-btn django-user-guide-next-btn">Next &gt;</button>',
-                '                <button class="django-user-guide-btn django-user-guide-done-btn">Done</button>',
-                '            </div>',
-                '        </div>',
-                '    </div>',
-                '</div>'
+            guides = createDom([
+                '<div data-guide="1" class="django-user-guide-item"><p>Hello guide 1</p></div>',
+                '<div data-guide="2" class="django-user-guide-item"><p>Hello guide 2</p></div>',
+                '<div data-guide="3" class="django-user-guide-item"><p>Hello guide 3</p></div>',
             ].join('\n'));
 
         //set a custom cookie
         document.cookie = 'csrf-token-custom=123456789';
 
-        //add the guide to the dom
-        appendDom(guide);
+        //add the guide items to the dom
+        document.querySelector('.django-user-guide-html-wrapper').appendChild(guides);
 
         //run the user guide
         dug.run();
@@ -111,8 +125,6 @@ describe('DjangoUserGuide', function() {
         //close the window
         dug.onCloseClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
-
-        removeDom(guide); //clean up the dom
     });
 
     it('should handle one item', function() {
@@ -120,26 +132,12 @@ describe('DjangoUserGuide', function() {
             items = null,
             btns = null,
             cont = null,
-            guide = createDom([
-                '<div class="django-user-guide">',
-                '   <div class="django-user-guide-mask">',
-                '      <div class="django-user-guide-window">',
-                '           <div class="django-user-guide-close-div">x</div>',
-                '           <div class="django-user-guide-html-wrapper">',
-                '               <div data-guide="1" class="django-user-guide-item"><p>Hello guide 1</p></div>',
-                '           </div>',
-                '           <div class="django-user-guide-window-nav">',
-                '                <button class="django-user-guide-btn django-user-guide-back-btn">&lt; Back</button>',
-                '                <button class="django-user-guide-btn django-user-guide-next-btn">Next &gt;</button>',
-                '                <button class="django-user-guide-btn django-user-guide-done-btn">Done</button>',
-                '            </div>',
-                '        </div>',
-                '    </div>',
-                '</div>'
+            guides = createDom([
+                '<div data-guide="1" class="django-user-guide-item"><p>Hello guide 1</p></div>',
             ].join('\n'));
 
-        //add the guide to the dom
-        appendDom(guide);
+        //add the guide items to the dom
+        document.querySelector('.django-user-guide-html-wrapper').appendChild(guides);
 
         //run the user guide
         dug.run();
@@ -155,32 +153,11 @@ describe('DjangoUserGuide', function() {
         //click done on the window
         dug.onDoneClick();
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
-
-        removeDom(guide); //clean up the dom
     });
 
     it('should handle no items', function() {
         var dug = new window.DjangoUserGuide(),
-            cont = null,
-            guide = createDom([
-                '<div class="django-user-guide">',
-                '   <div class="django-user-guide-mask">',
-                '      <div class="django-user-guide-window">',
-                '           <div class="django-user-guide-close-div">x</div>',
-                '           <div class="django-user-guide-html-wrapper">',
-                '           </div>',
-                '           <div class="django-user-guide-window-nav">',
-                '                <button class="django-user-guide-btn django-user-guide-back-btn">&lt; Back</button>',
-                '                <button class="django-user-guide-btn django-user-guide-next-btn">Next &gt;</button>',
-                '                <button class="django-user-guide-btn django-user-guide-done-btn">Done</button>',
-                '            </div>',
-                '        </div>',
-                '    </div>',
-                '</div>'
-            ].join('\n'));
-
-        //add the guide to the dom
-        appendDom(guide);
+            cont = null;
 
         //run the user guide
         dug.run();
@@ -211,8 +188,6 @@ describe('DjangoUserGuide', function() {
         dug.onMaskClick(getFakeEvt('django-user-guide-mask'));
 
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
-
-        removeDom(guide); //clean up the dom
     });
 
     it('should get a custom csrf token', function() {
@@ -227,6 +202,5 @@ describe('DjangoUserGuide', function() {
         //look for a missing cookie
         dug.csrfCookieName = 'missing-csrf-token';
         expect(dug.getCsrfToken()).toBe('');
-
     });
 });

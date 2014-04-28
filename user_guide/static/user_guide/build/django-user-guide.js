@@ -99,6 +99,18 @@
         },
 
         /**
+         * @method getCounterSpan
+         * Gets the guide's counter span.
+         * @returns {HTMLSpanElement}
+         */
+        getCounterSpan: function getCounterSpan() {
+            if (!this.counterDiv) {
+                this.counterDiv = document.querySelector('.django-user-guide-counter').querySelector('span');
+            }
+            return this.counterDiv;
+        },
+
+        /**
          * @method getCsrfToken
          * Gets the csrf token as set by the cookie.
          * @returns {String}
@@ -147,7 +159,7 @@
          * Decides which buttons should be visible, then shows/hides them accordingly.
          */
         showHideBtns: function showHideBtns() {
-            if (!this.getItems()[this.itemIndex + 1]) { //we have reached the end
+            if (this.itemIndex >= this.getItems().length) { //we have reached the end
 
                 //there might not be a previous guide
                 if (this.getItems().length > 1) {
@@ -158,7 +170,7 @@
 
                 this.hideEl(this.getNextBtn());
                 this.showEl(this.getDoneBtn());
-            } else if (!this.getItems()[this.itemIndex - 1]) { //we are at the start
+            } else if (this.itemIndex === 0) { //we are at the start
                 this.hideEl(this.getBackBtn());
                 this.hideEl(this.getDoneBtn());
                 this.showEl(this.getNextBtn());
@@ -178,7 +190,7 @@
                 next = this.getItems()[this.itemIndex + 1];
 
             if (curr && next) {
-                this.itemIndex++;
+                this.updateItemIndex(1);
                 this.hideEl(curr);
                 this.showEl(next);
                 this.showHideBtns();
@@ -194,11 +206,22 @@
                 prev = this.getItems()[this.itemIndex - 1];
 
             if (curr && prev) {
-                this.itemIndex--;
+                this.updateItemIndex(-1);
                 this.hideEl(curr);
                 this.showEl(prev);
                 this.showHideBtns();
             }
+        },
+
+        /**
+         * @method updateItemIndex
+         * Updates the item index and refreshes the tool tip numbers.
+         * @param {Number} num - The number to incread the {@link itemIndex} by.
+         */
+        updateItemIndex: function updateItemIndex(num) {
+            this.itemIndex += num;
+
+            this.getCounterSpan().innerHTML = 'Tip' + (this.itemIndex + 1) + 'of' + (this.getItems().length);
         },
 
         /**

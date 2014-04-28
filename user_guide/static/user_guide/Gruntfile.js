@@ -25,6 +25,7 @@ module.exports = function(grunt) {
         jasmine: {
             src: jsFiles,
             options: {
+                keepRunner: true,
                 specs: testFiles,
                 styles: ['build/django-user-guide.css'],
                 template: require('grunt-template-jasmine-istanbul'),
