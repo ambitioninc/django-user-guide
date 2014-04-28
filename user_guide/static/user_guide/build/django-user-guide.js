@@ -159,7 +159,7 @@
          * Decides which buttons should be visible, then shows/hides them accordingly.
          */
         showHideBtns: function showHideBtns() {
-            if (this.itemIndex >= this.getItems().length) { //we have reached the end
+            if (!this.getItems()[this.itemIndex + 1]) { //we have reached the end
 
                 //there might not be a previous guide
                 if (this.getItems().length > 1) {
@@ -170,7 +170,7 @@
 
                 this.hideEl(this.getNextBtn());
                 this.showEl(this.getDoneBtn());
-            } else if (this.itemIndex === 0) { //we are at the start
+            } else if (!this.getItems()[this.itemIndex - 1]) { //we are at the start
                 this.hideEl(this.getBackBtn());
                 this.hideEl(this.getDoneBtn());
                 this.showEl(this.getNextBtn());
@@ -221,7 +221,7 @@
         updateItemIndex: function updateItemIndex(num) {
             this.itemIndex += num;
 
-            this.getCounterSpan().innerHTML = 'Tip' + (this.itemIndex + 1) + 'of' + (this.getItems().length);
+            this.getCounterSpan().innerHTML = 'Tip ' + (this.itemIndex + 1) + ' of ' + (this.getItems().length);
         },
 
         /**
