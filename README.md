@@ -179,7 +179,7 @@ custom-script.js
      * @param {HTMLDivElement} item - The item to check.
      * @returns {Boolean}
      */
-    window.DjangoUserGuide.isFinished = function(item) {
+    window.DjangoUserGuide.prototype.isFinished = function isFinished(item) {
         if ((new Date()).getDay() === 1) {
             return true;
         }

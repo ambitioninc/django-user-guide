@@ -19,6 +19,9 @@ class Guide(models.Model):
     # The creation time of the guide.
     creation_time = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.guide_name
+
 
 class GuideInfo(models.Model):
     """
