@@ -15,6 +15,9 @@ register = template.Library()
 # The maximum number of guides to show per page
 USER_GUIDE_SHOW_MAX = getattr(settings, 'USER_GUIDE_SHOW_MAX', 10)
 
+# Use cookies to determine if guides should be shown
+USER_GUIDE_USE_COOKIES = getattr(settings, 'USER_GUIDE_USE_COOKIES', False)
+
 # The name of the csrf token cookie
 CSRF_COOKIE_NAME = getattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken')
 
@@ -76,7 +79,8 @@ def user_guide(context, *args, **kwargs):
             'css_href': '{0}user_guide/build/django-user-guide.css'.format(settings.STATIC_URL),
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
-            'custom_js_src': USER_GUIDE_JS_URL
+            'custom_js_src': USER_GUIDE_JS_URL,
+            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower()
         })
     else:
         return ''

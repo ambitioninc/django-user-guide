@@ -8,6 +8,7 @@
     window.DjangoUserGuide = function DjangoUserGuide(config) {
         config = config || {};
         this.csrfCookieName = config.csrfCookieName;
+        this.useCookies = config.useCookies;
         this.finishedItems = {};
         this.itemIndex = 0;
     };
@@ -45,7 +46,25 @@
          */
         getItems: function getItems() {
             if (!this.items) {
-                this.items = document.querySelectorAll('.django-user-guide-item');
+                var self = this,
+                    items = Array.prototype.slice.call(
+                        document.querySelectorAll('.django-user-guide-item')
+                    );
+
+                if (self.useCookies) { //only show items that do not have a cookie
+                    self.items = [];
+
+                    items.forEach(function(item) {
+                        var guideId = item.getAttribute('data-guide'),
+                            cookie = self.getCookie('django-user-guide-' + guideId);
+
+                        if (!cookie) {
+                            self.items.push(item);
+                        }
+                    });
+                } else { //show all the items
+                    self.items = items;
+                }
             }
             return this.items;
         },
@@ -111,6 +130,15 @@
         },
 
         /**
+         * @method getCookie
+         * Gets the cookie value for a given cookie name.
+         * @param {String} name - The name of the cookie to get.
+         */
+        getCookie: function getCookie(name) {
+            return document.cookie.match(new RegExp(name + '=([^;]*)'));
+        },
+
+        /**
          * @method getCsrfToken
          * Gets the csrf token as set by the cookie.
          * @returns {String}
@@ -118,7 +146,7 @@
         getCsrfToken: function getCsrfToken() {
             var csrf;
             if (this.csrfCookieName) {
-                csrf = document.cookie.match(new RegExp(this.csrfCookieName + '=([^;]*)'));
+                csrf = this.getCookie(this.csrfCookieName);
             }
             return csrf ? csrf[1] : '';
         },
@@ -247,6 +275,16 @@
         },
 
         /**
+         * @method saveCookie
+         * Saves a cookie for the given user guide.
+         * @param {String} name - The name of the cookie to save.
+         * @param {Boolean} value - The value of the cookie to save.
+         */
+        saveCookie: function saveCookie(name, value) {
+            document.cookie = name + '=' + value;
+        },
+
+        /**
          * @method isFinished
          * Describes if a particular guide has been finished. Always returns true by default.
          * Override this method for custom finish criteria logic.
@@ -268,9 +306,14 @@
 
             if (guideId && !this.finishedItems[guideId] && this.isFinished(item)) {
                 this.finishedItems[guideId] = true;
-                this.put('/user-guide/api/guideinfo/' + guideId + '/', {
-                    'is_finished': true
-                });
+
+                if (this.useCookies) { //save a cookie for the finished guide
+                    this.saveCookie('django-user-guide-' + guideId, 'true');
+                } else { //make a put request to mark the guide finished
+                    this.put('/user-guide/api/guideinfo/' + guideId + '/', {
+                        'is_finished': true
+                    });
+                }
             }
 
             return item;
