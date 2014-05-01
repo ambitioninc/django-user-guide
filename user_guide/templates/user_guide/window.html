@@ -32,7 +32,8 @@
 
     <script>
         (new window.DjangoUserGuide({
-            csrfCookieName: '{{ csrf_cookie_name }}'
+            csrfCookieName: '{{ csrf_cookie_name }}',
+            useCookies: {{ use_cookies }}
         })).run();
     </script>
 </div>

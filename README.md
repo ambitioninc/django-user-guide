@@ -155,6 +155,10 @@ The path to a custom style sheet for Django User Guides. Added as a `link` tag i
 
 The path to a custom script for Django User Guides. Added as a `script` tag immediately after the [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) source. If omitted, no extra scripts are included. See [django-user-guide.js](user_guide/static/user_guide/build/django-user-guide.js) for methods to override.
 
+#### USER_GUIDE_USE_COOKIES (default=False)
+
+True to use cookies instead of marking the guides as seen in the database. Useful for showing guides to shared Django users.
+
 ## Settings Usage
 
 settings.py
@@ -162,6 +166,7 @@ settings.py
 ```python
 # Django User Guide settings
 USER_GUIDE_SHOW_MAX = 5
+USER_GUIDE_USE_COOKIES = True
 USER_GUIDE_CSS_URL = 'absolute/path/to/style.css'
 USER_GUIDE_JS_URL = 'absolute/path/to/script.js'
 ```
