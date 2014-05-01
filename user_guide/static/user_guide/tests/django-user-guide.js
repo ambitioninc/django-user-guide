@@ -170,7 +170,7 @@ describe('DjangoUserGuide', function() {
         counter = queryAllDom('.django-user-guide-counter span')[0];
 
         expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
-        expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the next button
+        expect(getRenderedStyle(btns[2], 'display')).toBe('inline-block'); //should show the done button
         expect(counter.innerHTML).toBe('Tip 1 of 1');
 
         //click done on the window
@@ -179,6 +179,77 @@ describe('DjangoUserGuide', function() {
             '/user-guide/api/guideinfo/23/', {'is_finished': true}
         ); //should make a PUT request
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
+    });
+
+    it('should handle cookies instead of puts', function() {
+        var dug = new window.DjangoUserGuide({
+                useCookies: true
+            }),
+            items = null,
+            btns = null,
+            cont = null,
+            counter = null,
+            guides = [
+                '<div data-guide="23" class="django-user-guide-item"><p>Hello guide 23</p></div>',
+                '<div data-guide="24" class="django-user-guide-item"><p>Hello guide 24</p></div>',
+            ].join('\n');
+
+        //add the guide items to the dom
+        document.querySelector('.django-user-guide-html-wrapper').innerHTML = guides;
+
+        //mock async methods
+        spyOn(dug, 'put');
+
+        //run the user guide
+        dug.run();
+
+        //examine the result
+        items = queryAllDom('.django-user-guide-item');
+        btns = queryAllDom('button');
+        cont = queryAllDom('.django-user-guide');
+        counter = queryAllDom('.django-user-guide-counter span')[0];
+
+        expect(getRenderedStyle(items[0], 'display')).toBe('block'); //should show the first item
+        expect(getRenderedStyle(btns[1], 'display')).toBe('inline-block'); //should show the next button
+        expect(getRenderedStyle(btns[2], 'display')).toBe('none'); //should not show the done button
+        expect(counter.innerHTML).toBe('Tip 1 of 2');
+
+        //click on the next button
+        dug.onNextClick();
+        expect(dug.put).not.toHaveBeenCalled(); //should NOT make a PUT request
+        expect(dug.getCookie('django-user-guide-23')).not.toBeNull(); //should have set a cookie for guide 23
+
+        //click done on the window
+        dug.onDoneClick();
+        expect(dug.put).not.toHaveBeenCalled(); //should NOT make a PUT request
+        expect(dug.getCookie('django-user-guide-24')).not.toBeNull(); //should have set a cookie for guide 24
+        expect(getRenderedStyle(cont[0], 'display')).toBe('none');
+
+        //a new user guide using cookies should get no items
+        dug = new window.DjangoUserGuide({
+            useCookies: true
+        });
+        expect(dug.getItems().length).toBe(0);
+
+        //a new user guide not using cookies should get items
+        dug = new window.DjangoUserGuide({
+            useCookies: false
+        });
+        expect(dug.getItems().length).toBe(2);
+
+        //clear the cookies
+        document.cookie = 'django-user-guide-23=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-24=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+        //a new user guide using cookies should get 2 items
+        dug = new window.DjangoUserGuide({
+            useCookies: true
+        });
+        expect(dug.getItems().length).toBe(2);
+
+        //clean up the the cookies
+        document.cookie = 'django-user-guide-23=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-24=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 
     it('should handle no items', function() {
@@ -236,7 +307,7 @@ describe('DjangoUserGuide', function() {
         document.cookie = 'csrf-token-custom=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 
-    it('should put data to a give url', function() {
+    it('should put data to a given url', function() {
         var dug = new window.DjangoUserGuide(),
             sendData = {
                 'is_finished': true
