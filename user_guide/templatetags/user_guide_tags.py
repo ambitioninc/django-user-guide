@@ -80,7 +80,7 @@ def user_guide(context, *args, **kwargs):
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
             'custom_js_src': USER_GUIDE_JS_URL,
-            'use_cookies': 'true' if USER_GUIDE_USE_COOKIES else 'false'
+            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower()
         })
     else:
         return ''
