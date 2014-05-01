@@ -157,7 +157,7 @@ The path to a custom script for Django User Guides. Added as a `script` tag imme
 
 #### USER_GUIDE_USE_COOKIES (default=False)
 
-True to use cookies instead of marking the guides as seen in the database. Useful for showing guides to shared Django users.
+True to use cookies instead of marking the guides as seen in the database. Useful for showing guides to multiple shared Django users.
 
 ## Settings Usage
 
