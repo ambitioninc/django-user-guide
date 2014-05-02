@@ -281,7 +281,7 @@
          * @param {Boolean} value - The value of the cookie to save.
          */
         saveCookie: function saveCookie(name, value) {
-            document.cookie = name + '=' + value;
+            document.cookie = name + '=' + value + ';path=/;';
         },
 
         /**

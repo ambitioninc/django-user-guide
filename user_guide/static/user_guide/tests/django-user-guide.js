@@ -75,7 +75,7 @@ describe('DjangoUserGuide', function() {
             ].join('\n');
 
         //set a custom cookie
-        document.cookie = 'csrf-token-custom=123456789';
+        document.cookie = 'csrf-token-custom=123456789;path=/;';
 
         //add the guide items to the dom
         document.querySelector('.django-user-guide-html-wrapper').innerHTML = guides;
@@ -238,8 +238,8 @@ describe('DjangoUserGuide', function() {
         expect(dug.getItems().length).toBe(2);
 
         //clear the cookies
-        document.cookie = 'django-user-guide-23=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        document.cookie = 'django-user-guide-24=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-23=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-24=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 
         //a new user guide using cookies should get 2 items
         dug = new window.DjangoUserGuide({
@@ -248,8 +248,8 @@ describe('DjangoUserGuide', function() {
         expect(dug.getItems().length).toBe(2);
 
         //clean up the the cookies
-        document.cookie = 'django-user-guide-23=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        document.cookie = 'django-user-guide-24=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-23=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'django-user-guide-24=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 
     it('should handle no items', function() {
@@ -296,7 +296,7 @@ describe('DjangoUserGuide', function() {
         });
 
         //set a custom cookie for extraction
-        document.cookie = 'csrf-token-custom=123456789';
+        document.cookie = 'csrf-token-custom=123456789;path=/;';
         expect(dug.getCsrfToken()).toBe('123456789');
 
         //look for a missing cookie
@@ -304,7 +304,7 @@ describe('DjangoUserGuide', function() {
         expect(dug.getCsrfToken()).toBe('');
 
         //clean up the cookie
-        document.cookie = 'csrf-token-custom=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'csrf-token-custom=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 
     it('should put data to a given url', function() {
@@ -326,12 +326,12 @@ describe('DjangoUserGuide', function() {
             csrfCookieName: 'csrf-token-custom'
         });
 
-        document.cookie = 'csrf-token-custom=1234';
+        document.cookie = 'csrf-token-custom=1234;path=/';
         dug.put('/', sendData);
         expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('X-CSRFToken', '1234');
         expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
 
         //clean up the cookie
-        document.cookie = 'csrf-token-custom=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'csrf-token-custom=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 });
