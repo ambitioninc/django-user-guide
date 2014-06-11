@@ -6,6 +6,7 @@ import re
 from django import template
 from django.conf import settings
 from django.template import loader
+from django.template.defaulttags import CsrfTokenNode
 
 from user_guide.models import GuideInfo
 
@@ -76,7 +77,8 @@ def user_guide(context, *args, **kwargs):
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
             'custom_js_src': USER_GUIDE_JS_URL,
-            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower()
+            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower(),
+            'csrf_node': CsrfTokenNode().render(context)
         })
     else:
         return ''

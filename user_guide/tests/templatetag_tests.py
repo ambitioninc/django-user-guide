@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.http import HttpRequest
-from django.template import Template, Context
+from django.template import Context, Template
 from django.test import TestCase
 
 from user_guide.models import Guide, GuideInfo
@@ -40,7 +40,8 @@ class TemplateTagTest(TestCase):
         r = HttpRequest()
         r.user = self.users[0]
         c = Context({
-            'request': r
+            'request': r,
+            'csrf_token': '1234'
         })
 
         # Create an info for each guide
@@ -50,6 +51,7 @@ class TemplateTagTest(TestCase):
         rendered = t.render(c)
 
         # Make sure the correct guides show up, guide_order should apply here
+        self.assertTrue('<input type=\'hidden\' name=\'csrfmiddlewaretoken\' value=\'1234\' />' in rendered)
         self.assertTrue('Hello test 9!' in rendered)
         self.assertTrue('data-guide="{0}"'.format(guide_infos[9].id) in rendered)
         self.assertTrue('Hello test 8!' in rendered)
@@ -94,7 +96,8 @@ class TemplateTagTest(TestCase):
         r.user = self.users[0]
         c = Context({
             'request': r,
-            'guide_tags': ['tag0', 'tag1']
+            'guide_tags': ['tag0', 'tag1'],
+            'csrf_token': '1234'
         })
 
         # create a few guide infos
@@ -104,5 +107,6 @@ class TemplateTagTest(TestCase):
         # render the template
         rendered = t.render(c)
 
+        self.assertTrue('<input type=\'hidden\' name=\'csrfmiddlewaretoken\' value=\'1234\' />' in rendered)
         self.assertTrue('<div>Hello test 0!' in rendered)
         self.assertTrue('<div>Hello test 1!' in rendered)
