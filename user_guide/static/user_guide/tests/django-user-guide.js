@@ -290,28 +290,18 @@ describe('DjangoUserGuide', function() {
         expect(getRenderedStyle(cont[0], 'display')).toBe('none'); //should still be hidden
     });
 
-    it('should get a custom csrf token', function() {
-        var dug = new window.DjangoUserGuide({
-            csrfCookieName: 'csrf-token-custom'
-        });
+    it('should return empty csrf token', function() {
+        var dug = new window.DjangoUserGuide();
 
-        //set a custom cookie for extraction
-        document.cookie = 'csrf-token-custom=123456789;path=/;';
-        expect(dug.getCsrfToken()).toBe('123456789');
-
-        //look for a missing cookie
-        dug.csrfCookieName = 'missing-csrf-token';
         expect(dug.getCsrfToken()).toBe('');
-
-        //clean up the cookie
-        document.cookie = 'csrf-token-custom=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 
     it('should put data to a given url', function() {
         var dug = new window.DjangoUserGuide(),
             sendData = {
                 'is_finished': true
-            };
+            },
+            input = '<input type="hidden" name="csrfmiddlewaretoken" value="1234" />';
 
         //mock async methods and setRequestHeader
         spyOn(XMLHttpRequest.prototype, 'send');
@@ -322,16 +312,13 @@ describe('DjangoUserGuide', function() {
         expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
 
         //make sure a csrf token can be set
-        dug = new window.DjangoUserGuide({
-            csrfCookieName: 'csrf-token-custom'
-        });
+        dug = new window.DjangoUserGuide();
 
-        document.cookie = 'csrf-token-custom=1234;path=/';
+        //add the csrf token to the html
+        document.querySelector('.django-user-guide-html-wrapper').innerHTML = input;
+
         dug.put('/', sendData);
         expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('X-CSRFToken', '1234');
         expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
-
-        //clean up the cookie
-        document.cookie = 'csrf-token-custom=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     });
 });

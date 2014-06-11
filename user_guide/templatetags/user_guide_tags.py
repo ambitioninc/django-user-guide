@@ -6,6 +6,7 @@ import re
 from django import template
 from django.conf import settings
 from django.template import loader
+from django.template.defaulttags import CsrfTokenNode
 
 from user_guide.models import GuideInfo
 
@@ -17,9 +18,6 @@ USER_GUIDE_SHOW_MAX = getattr(settings, 'USER_GUIDE_SHOW_MAX', 10)
 
 # Use cookies to determine if guides should be shown
 USER_GUIDE_USE_COOKIES = getattr(settings, 'USER_GUIDE_USE_COOKIES', False)
-
-# The name of the csrf token cookie
-CSRF_COOKIE_NAME = getattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken')
 
 # The url to any custom CSS
 USER_GUIDE_CSS_URL = getattr(
@@ -75,12 +73,12 @@ def user_guide(context, *args, **kwargs):
         # Return the rendered template with the guide html
         return loader.render_to_string('user_guide/window.html', {
             'html': re.sub(r'\{\s*static\s*\}', settings.STATIC_URL, html),
-            'csrf_cookie_name': CSRF_COOKIE_NAME,
             'css_href': '{0}user_guide/build/django-user-guide.css'.format(settings.STATIC_URL),
             'js_src': '{0}user_guide/build/django-user-guide.js'.format(settings.STATIC_URL),
             'custom_css_href': USER_GUIDE_CSS_URL,
             'custom_js_src': USER_GUIDE_JS_URL,
-            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower()
+            'use_cookies': str(USER_GUIDE_USE_COOKIES).lower(),
+            'csrf_node': CsrfTokenNode().render(context)
         })
     else:
         return ''
