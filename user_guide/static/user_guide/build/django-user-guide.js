@@ -7,7 +7,6 @@
      */
     window.DjangoUserGuide = function DjangoUserGuide(config) {
         config = config || {};
-        this.csrfCookieName = config.csrfCookieName;
         this.useCookies = config.useCookies;
         this.finishedItems = {};
         this.itemIndex = 0;
@@ -144,11 +143,8 @@
          * @returns {String}
          */
         getCsrfToken: function getCsrfToken() {
-            var csrf;
-            if (this.csrfCookieName) {
-                csrf = this.getCookie(this.csrfCookieName);
-            }
-            return csrf ? csrf[1] : '';
+            var input = this.getGuide().querySelector('input[name=csrfmiddlewaretoken]');
+            return input ? input.value : '';
         },
 
         /**
