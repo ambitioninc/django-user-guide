@@ -43,7 +43,7 @@ setup(
         'django-nose',
         'django-dynamic-fixture',
         'south',
-        'freezegun'
+        'freezegun==0.2.8'
     ],
     test_suite='run_tests.run_tests',
     include_package_data=True,
