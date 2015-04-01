@@ -16,7 +16,7 @@ class TemplateTagTest(TestCase):
                 email='test{0}@test.com'.format(i),
                 password='test'
             )
-            for i in xrange(0, 5)
+            for i in range(0, 5)
         ]
 
         self.guides = [
@@ -27,7 +27,7 @@ class TemplateTagTest(TestCase):
                 guide_tag='tag{0}'.format(i),
                 guide_importance=i
             )
-            for i in xrange(0, 10)
+            for i in range(0, 10)
         ]
 
     def test_user_guide_tags_no_user(self):
