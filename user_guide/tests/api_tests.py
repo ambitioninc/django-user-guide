@@ -19,18 +19,18 @@ class GuideInfoResourceTest(ResourceTestCase):
                 username='test{0}@test.com'.format(i),
                 email='test{0}@test.com'.format(i)
             )
-            for i in xrange(0, 2)
+            for i in range(0, 2)
         ]
 
         self.guides = [
             G(Guide, html='<div>Hello test {0}!</div>'.format(i), guide_name='Test Guide {0}'.format(i))
-            for i in xrange(0, 5)
+            for i in range(0, 5)
         ]
 
     def test_get_guide_info_resource(self):
 
         # Make some guide info objects
-        guide_infos = [G(GuideInfo, user=self.users[i], guide=self.guides[i]) for i in xrange(2)]
+        guide_infos = [G(GuideInfo, user=self.users[i], guide=self.guides[i]) for i in range(2)]
 
         # Should not allow unauthorize access
         resp = self.api_client.get('/api/guideinfo/', format='json')

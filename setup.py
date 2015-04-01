@@ -24,25 +24,29 @@ setup(
     long_description=open('README.md').read(),
     url='https://github.com/ambitioninc/django-user-guide',
     author='Jeff McRiffey',
-    author_email='jeff.mcriffey@tryambition.com',
+    author_email='jeff.mcriffey@ambition.com',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Framework :: Django',
+        'Framework :: Django :: 1.6',
+        'Framework :: Django :: 1.7'
     ],
     license='MIT',
     install_requires=[
-        'django>=1.6',
+        'Django>=1.6',
         'django-tastypie>=0.11'
     ],
     tests_require=[
         'psycopg2',
         'django-nose',
         'django-dynamic-fixture',
-        'south',
+        'south>=1.0.2',
         'freezegun'
     ],
     test_suite='run_tests.run_tests',

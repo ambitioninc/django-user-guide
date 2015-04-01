@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ambitioninc/django-user-guide.png)](https://travis-ci.org/ambitioninc/django-user-guide)
-##Django User Guide
+# Django User Guide
 
 
 Django User Guide is a `django>=1.6` app that shows configurable, self-contained HTML guides to users. Showing a guide to all of your users is as easy as

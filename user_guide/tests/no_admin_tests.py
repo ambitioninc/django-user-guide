@@ -1,3 +1,7 @@
+import six
+if six.PY3:  # pragma: no cover
+    from importlib import reload
+
 from django.conf import settings
 from django.test import TestCase
 
