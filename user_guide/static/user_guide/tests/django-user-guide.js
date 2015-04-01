@@ -81,7 +81,7 @@ describe('DjangoUserGuide', function() {
         document.querySelector('.django-user-guide-html-wrapper').innerHTML = guides;
 
         //mock async methods
-        spyOn(dug, 'put');
+        spyOn(dug, 'post');
 
         //run the user guide
         dug.run();
@@ -103,8 +103,8 @@ describe('DjangoUserGuide', function() {
         //click the next button
         dug.onNextClick();
 
-        expect(dug.put).toHaveBeenCalledWith(
-            '/user-guide/api/guideinfo/1/', {'is_finished': true}
+        expect(dug.post).toHaveBeenCalledWith(
+            '/user-guide/seen/', {'is_finished': true, id: 1}
         ); //should make a PUT request
         expect(getRenderedStyle(items[0], 'display')).toBe('none'); //should NOT show the first item
         expect(getRenderedStyle(items[1], 'display')).toBe('block'); //should show the second item
@@ -117,8 +117,8 @@ describe('DjangoUserGuide', function() {
         //click the next button
         dug.onNextClick();
 
-        expect(dug.put).toHaveBeenCalledWith(
-            '/user-guide/api/guideinfo/2/', {'is_finished': true}
+        expect(dug.post).toHaveBeenCalledWith(
+            '/user-guide/seen/', {'is_finished': true, id: 2}
         ); //should make a PUT request
         expect(getRenderedStyle(items[0], 'display')).toBe('none'); //should NOT show the first item
         expect(getRenderedStyle(items[1], 'display')).toBe('none'); //should NOT show the second item
@@ -158,7 +158,7 @@ describe('DjangoUserGuide', function() {
         document.querySelector('.django-user-guide-html-wrapper').innerHTML = guides;
 
         //mock async methods
-        spyOn(dug, 'put');
+        spyOn(dug, 'post');
 
         //run the user guide
         dug.run();
@@ -175,13 +175,13 @@ describe('DjangoUserGuide', function() {
 
         //click done on the window
         dug.onDoneClick();
-        expect(dug.put).toHaveBeenCalledWith(
-            '/user-guide/api/guideinfo/23/', {'is_finished': true}
+        expect(dug.post).toHaveBeenCalledWith(
+            '/user-guide/seen/', {'is_finished': true, id: 23}
         ); //should make a PUT request
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
     });
 
-    it('should handle cookies instead of puts', function() {
+    it('should handle cookies instead of posts', function() {
         var dug = new window.DjangoUserGuide({
                 useCookies: true
             }),
@@ -198,7 +198,7 @@ describe('DjangoUserGuide', function() {
         document.querySelector('.django-user-guide-html-wrapper').innerHTML = guides;
 
         //mock async methods
-        spyOn(dug, 'put');
+        spyOn(dug, 'post');
 
         //run the user guide
         dug.run();
@@ -216,12 +216,12 @@ describe('DjangoUserGuide', function() {
 
         //click on the next button
         dug.onNextClick();
-        expect(dug.put).not.toHaveBeenCalled(); //should NOT make a PUT request
+        expect(dug.post).not.toHaveBeenCalled(); //should NOT make a PUT request
         expect(dug.getCookie('django-user-guide-23')).not.toBeNull(); //should have set a cookie for guide 23
 
         //click done on the window
         dug.onDoneClick();
-        expect(dug.put).not.toHaveBeenCalled(); //should NOT make a PUT request
+        expect(dug.post).not.toHaveBeenCalled(); //should NOT make a PUT request
         expect(dug.getCookie('django-user-guide-24')).not.toBeNull(); //should have set a cookie for guide 24
         expect(getRenderedStyle(cont[0], 'display')).toBe('none');
 
@@ -257,7 +257,7 @@ describe('DjangoUserGuide', function() {
             cont = null;
 
         //mock async methods
-        spyOn(dug, 'put');
+        spyOn(dug, 'post');
 
         //run the user guide
         dug.run();
@@ -296,7 +296,7 @@ describe('DjangoUserGuide', function() {
         expect(dug.getCsrfToken()).toBe('');
     });
 
-    it('should put data to a given url', function() {
+    it('should post data to a given url', function() {
         var dug = new window.DjangoUserGuide(),
             sendData = {
                 'is_finished': true
@@ -307,7 +307,7 @@ describe('DjangoUserGuide', function() {
         spyOn(XMLHttpRequest.prototype, 'send');
         spyOn(XMLHttpRequest.prototype, 'setRequestHeader');
 
-        dug.put('/', sendData);
+        dug.post('/', sendData);
         expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
         expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
 
@@ -317,7 +317,7 @@ describe('DjangoUserGuide', function() {
         //add the csrf token to the html
         document.querySelector('.django-user-guide-html-wrapper').innerHTML = input;
 
-        dug.put('/', sendData);
+        dug.post('/', sendData);
         expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('X-CSRFToken', '1234');
         expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
     });
