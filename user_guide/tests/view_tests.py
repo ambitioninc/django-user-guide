@@ -18,7 +18,4 @@ class GuideSeenTest(TestCase):
         view = views.GuideSeenView()
 
         self.assertEqual(view.post(request).status_code, 200)
-        self.assertEqual(
-            models.GuideInfo.objects.get(id=guide_info.id),
-            is_finished=True
-        )
+        self.assertTrue(models.GuideInfo.objects.get(id=guide_info.id).is_finished)
