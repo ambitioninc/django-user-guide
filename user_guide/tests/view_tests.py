@@ -11,7 +11,7 @@ class GuideSeenTest(TestCase):
     def test_post(self):
         user = G(User)
         guide_info = G(models.GuideInfo, user=user)
-        request = Mock(POST={
+        request = Mock(user=user, POST={
             'id': guide_info.id,
             'is_finished': True
         })
