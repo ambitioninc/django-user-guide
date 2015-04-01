@@ -1,4 +1,4 @@
-from django.auth.models import User
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django_dynamic_fixture import G
 from mock import Mock
