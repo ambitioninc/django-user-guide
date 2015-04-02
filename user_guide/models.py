@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
+import six
 
 
+@six.python_2_unicode_compatible
 class Guide(models.Model):
     """
     Describes a guide to be tied to any number of users.
@@ -19,8 +21,8 @@ class Guide(models.Model):
     # The creation time of the guide.
     creation_time = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
-        return self.guide_name
+    def __str__(self):
+        return str(self.guide_name)
 
 
 class GuideInfo(models.Model):

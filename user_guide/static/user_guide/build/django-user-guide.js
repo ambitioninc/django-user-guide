@@ -249,17 +249,17 @@
         },
 
         /**
-         * @method put
-         * Makes a PUT request to the given url, with the given data.
-         * @param {String} url - The url to PUT.
-         * @param {Object} data - The data to PUT.
+         * @method post
+         * Makes a POST request to the given url, with the given data.
+         * @param {String} url - The url to POST.
+         * @param {Object} data - The data to POST.
          */
-        put: function put(url, data) {
+        post: function post(url, data) {
             var req = new XMLHttpRequest(),
                 csrfToken = this.getCsrfToken();
 
             //open the request
-            req.open('PUT', url, true);
+            req.open('POST', url, true);
 
             if (csrfToken) { //see if the csrf token should be set
                 req.setRequestHeader('X-CSRFToken', csrfToken);
@@ -294,19 +294,20 @@
 
         /**
          * @method finishItem
-         * Marks an item finished and calls {@link put}.
+         * Marks an item finished and calls {@link post}.
          * @param {HTMLDivElement} item - The item to mark finished.
          */
         finishItem: function finishItem(item) {
-            var guideId = item ? item.getAttribute('data-guide') : null;
+            var guideId = +(item ? item.getAttribute('data-guide') : null);
 
             if (guideId && !this.finishedItems[guideId] && this.isFinished(item)) {
                 this.finishedItems[guideId] = true;
 
                 if (this.useCookies) { //save a cookie for the finished guide
                     this.saveCookie('django-user-guide-' + guideId, 'true');
-                } else { //make a put request to mark the guide finished
-                    this.put('/user-guide/api/guideinfo/' + guideId + '/', {
+                } else { //make a post request to mark the guide finished
+                    this.post('/user-guide/seen/', {
+                        'id': guideId,
                         'is_finished': true
                     });
                 }

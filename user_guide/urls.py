@@ -1,14 +1,9 @@
-from django.conf.urls import patterns, include, url
-from tastypie.api import NamespacedApi
+from django.conf.urls import patterns, url
 
-from user_guide.api import GuideResource, GuideInfoResource
+from user_guide import views
 
-
-user_guide_api = NamespacedApi(api_name='api', urlconf_namespace='user_guide')
-user_guide_api.register(GuideResource())
-user_guide_api.register(GuideInfoResource())
 
 urlpatterns = patterns(
     '',
-    url(r'', include(user_guide_api.urls, namespace='user_guide'))
+    url(r'/seen/', views.GuideSeenView.as_view(), name='user_guide.seen')
 )
