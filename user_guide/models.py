@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 import six
 
@@ -30,7 +30,7 @@ class GuideInfo(models.Model):
     Ties a guide to a user.
     """
     # The user that should see this guide.
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     # The guide that should be shown to the user.
     guide = models.ForeignKey(Guide)
     # Has the guide been seen by a user?
