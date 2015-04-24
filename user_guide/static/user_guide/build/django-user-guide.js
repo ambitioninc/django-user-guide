@@ -256,7 +256,10 @@
          */
         post: function post(url, data) {
             var req = new XMLHttpRequest(),
-                csrfToken = this.getCsrfToken();
+                csrfToken = this.getCsrfToken(),
+                encoded = Object.keys(data).map(function(key) {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+                }).join('&');
 
             //open the request
             req.open('POST', url, true);
@@ -266,8 +269,8 @@
             }
 
             //send the data
-            req.setRequestHeader('Content-Type', 'application/json');
-            req.send(JSON.stringify(data));
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            req.send(encoded);
         },
 
         /**

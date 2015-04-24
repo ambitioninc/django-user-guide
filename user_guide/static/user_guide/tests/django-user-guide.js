@@ -299,6 +299,7 @@ describe('DjangoUserGuide', function() {
     it('should post data to a given url', function() {
         var dug = new window.DjangoUserGuide(),
             sendData = {
+                id: 1,
                 'is_finished': true
             },
             input = '<input type="hidden" name="csrfmiddlewaretoken" value="1234" />';
@@ -308,8 +309,11 @@ describe('DjangoUserGuide', function() {
         spyOn(XMLHttpRequest.prototype, 'setRequestHeader');
 
         dug.post('/', sendData);
-        expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json');
-        expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
+        expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith(
+            'Content-Type',
+            'application/x-www-form-urlencoded; charset=UTF-8'
+        );
+        expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith('id=1&is_finished=true');
 
         //make sure a csrf token can be set
         dug = new window.DjangoUserGuide();
@@ -319,6 +323,6 @@ describe('DjangoUserGuide', function() {
 
         dug.post('/', sendData);
         expect(XMLHttpRequest.prototype.setRequestHeader).toHaveBeenCalledWith('X-CSRFToken', '1234');
-        expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith(JSON.stringify(sendData));
+        expect(XMLHttpRequest.prototype.send).toHaveBeenCalledWith('id=1&is_finished=true');
     });
 });
