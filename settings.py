@@ -1,6 +1,5 @@
 import os
 
-import django
 from django.conf import settings
 
 
@@ -39,7 +38,7 @@ def configure_settings():
                 'django.contrib.admin',
                 'user_guide',
                 'user_guide.tests',
-            ) + (('south',) if django.VERSION[1] <= 6 else ()),
+            ),
             ROOT_URLCONF='user_guide.urls',
             DEBUG=False,
             USER_GUIDE_SHOW_MAX=5,
@@ -47,4 +46,6 @@ def configure_settings():
             USER_GUIDE_JS_URL='custom-script.js',
             STATIC_URL='/static/',
             SECRET_KEY='somethignmadeup',
+            TEST_RUNNER='django_nose.NoseTestSuiteRunner',
+            NOSE_ARGS=['--nocapture', '--nologcapture', '--verbosity=1'],
         )
