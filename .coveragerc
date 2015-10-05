@@ -2,7 +2,6 @@
 branch = True
 omit =
     */migrations/*
-    */south_migrations/*
     user_guide/version.py
     user_guide/apps.py
 source = user_guide
