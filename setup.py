@@ -34,18 +34,18 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Framework :: Django',
-        'Framework :: Django :: 1.6',
-        'Framework :: Django :: 1.7'
+        'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8'
     ],
     license='MIT',
     install_requires=[
-        'Django>=1.6',
+        'Django>=1.7',
     ],
     tests_require=[
         'psycopg2',
         'django-nose',
         'django-dynamic-fixture',
-        'south>=1.0.2',
+        'mock==1.0.1',
         'freezegun'
     ],
     test_suite='run_tests.run_tests',
